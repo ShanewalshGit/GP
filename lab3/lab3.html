@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+      canvas {
+        border: 3px solid black;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <h1>Shane Walsh</h1>
+    <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+
+    <script type="text/javascript">
+        
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("canvas-for-ball");
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+
+	  class Paddle {
+		constructor(x, y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		draw(){
+			ctx.fillRect(30, 30, 20, 20);
+		}
+
+		move(){
+
+		}
+	  }
+
+      class Ball {
+            constructor(x, y, yVelocity, xVelocity, radius) {
+                this.x = x;
+                this.y = y;
+                this.yVelocity = yVelocity;
+                this.xVelocity = xVelocity;
+                this.radius = radius;
+                this.angle;
+            }
+
+            draw(){
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Convert cartesian to Polar
+                var polarRadius = Math.sqrt(this.x*this.x + this.y*this.y);
+                var polarAngle = Math.atan2(this.y,this.x);
+
+                // Draw lines through circle using polar coordinates
+                var centerX = this.x;
+                var centerY = this.y;
+                var circleRadius = this.radius;
+
+                var lineLength = this.radius; // Length of the lines
+
+                // Draw lines at 45-degrees through circle
+                for (let i = 0; i < 2; i++) {
+                  var angle = polarAngle + (i === 0 ? Math.PI /4 : -Math.PI / 4); // Gotten off stackOverflow
+                  var startX = centerX + this.radius * Math.cos(angle);
+                  var startY = centerY + this.radius * Math.sin(angle);
+                  var endX = centerX + lineLength * Math.cos(angle - Math.PI);
+                  var endY = centerY + lineLength * Math.sin(angle - Math.PI);
+
+                  ctx.beginPath();
+                  ctx.moveTo(startX, startY);
+                  ctx.lineTo(endX, endY);
+                  ctx.lineWidth = 2;
+                  ctx.strokeStyle = "red";
+                  ctx.stroke();
+                  
+                }
+            }
+
+            move(){
+              // Move vertically and horizontally
+                this.y += this.yVelocity;
+                this.x += this.xVelocity;
+
+              // Rotate
+              this.angle += this.angle +1.1;
+
+                var xCap = 10;
+                // Resets velocity
+                if (this.xVelocity >= xCap)
+                {
+                  this.xVelocity = 1;
+                }
+                if (this.yVelocity >= xCap)
+                {
+                  this.yVelocity = 1;
+                }
+
+                // Bounce on Y canvas bottom
+                if(this.y >= 500-this.radius)
+                {
+                    this.yVelocity *= -1.1;
+                    this.angle *= -1.1;
+                }
+
+                // Bounce on Y canvas top
+                if(this.y < 0+this.radius)
+                {
+                    this.yVelocity *= -1.1;
+                    this.angle *= -1.1;
+                }
+
+                // Bounce on X canvas right side
+                if(this.x >=500-this.radius)
+                {
+                  this.xVelocity *= -1.1;
+                  this.angle *= -1.1;
+                }
+
+                // Bounce on X canvas left side
+                if(this.x < 0+this.radius)
+                {
+                  this.xVelocity *= -1-1;
+                  this.angle *= -1.1;
+                }
+              
+            }
+      }
+
+      // Construct instances of the balls
+      const b1 = new Ball(20, 20, 4, 8, 15);
+      const b2 = new Ball(50, 50, 2, 5, 10);
+	  const p1 = new Paddle(20,20);
+      // A function to repeat every time the animation loops.
+      function repeatme() {
+        // Clear canvas
+        ctx.clearRect(0, 0, 500, 500);
+        // Draw the balls (stroked, not filled).
+        b1.draw();
+        b2.draw();
+		p1.draw();
+        
+        // Move the balls
+        b1.move();
+        b2.move();
+		p1.move();
+
+        window.requestAnimationFrame(repeatme);
+      }
+      
+      // Get the animation going.
+      repeatme();
+
+	  // Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		});
+
+		//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			// key code for left arrow
+			case 37:
+				console.log('left arrow key pressed!');
+				break;
+
+			// key code for top arrow
+			case 36:
+				console.log('top arrow key pressed!');
+				p1.y = p1.y - 10;
+				break;
+
+			// key code for right arrow
+			case 39:
+				console.log('right arrow key pressed!');
+				break;
+			
+			// key code for bottom arrow
+			case 40:
+				console.log('bottem arrow key pressed');
+				p1.y = p1.y + 500;
+        break;
+			}
+
+		});
+    </script>
+
+  </body>
+
+</html>
