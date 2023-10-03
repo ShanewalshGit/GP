@@ -96,44 +96,43 @@
 
             move(){
               // Move vertically and horizontally
+              /*
                 this.y += this.yVelocity;
-                //this.x += this.xVelocity;
+                this.x += this.xVelocity;
+                */
+
+                //update the y location
                 this.y += this.ySpeed;
                 this.ySpeed += 0.5;
 
               // Rotate
-              //this.angle += this.angle +1.1;
+              this.angle += this.angle +1.1;
 
-                // Bounce on Y canvas bottom
-                if(this.y >= 500-this.radius)
+              /*
+                var xCap = 10;
+                // Resets velocity
+                if (this.xVelocity >= xCap)
                 {
-                    this.yVelocity *= -1.1;
-                    this.angle *= -1.1;
+                  this.xVelocity = 1;
+                }
+                if (this.yVelocity >= xCap)
+                {
+                  this.yVelocity = 1;
+                }
+                */
+
+                if(this.y > canvas)
+                {
+                    //this.yVelocity *= -1.1;
                     this.ySpeed = this.ySpeed* -1;
+                    //this.angle *= -1.1;
                 }
 
-                // Bounce on Y canvas top
-                if(this.y < 0+this.radius)
+                if(this.y < 0)
                 {
-                    this.yVelocity *= -1.1;
-                    this.angle *= -1.1;
+                    //this.yVelocity *= -1.1;
                     this.ySpeed = this.ySpeed* -1;
-                }
-
-                // Bounce on X canvas right side
-                if(this.x >=500-this.radius)
-                {
-                  this.xVelocity *= -1.1;
-                  this.angle *= -1.1;
-                  this.ySpeed = this.ySpeed* -1;
-                }
-
-                // Bounce on X canvas left side
-                if(this.x < 0+this.radius)
-                {
-                  this.xVelocity *= -1-1;
-                  this.angle *= -1.1;
-                  this.ySpeed = this.ySpeed* -1;
+                    //this.angle *= -1.1;
                 }
               
             }
