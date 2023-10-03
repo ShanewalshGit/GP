@@ -60,66 +60,56 @@
                 this.xVelocity = xVelocity;
                 this.radius = radius;
                 this.angle;
+                this.ySpeed;
             }
 
             draw(){
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+
+                var angle = (Math.PI/4);
+                ctx.moveTo(this.x, this.y);
+                var xOC = (this.radius * Math.cos(angle)) + this.x;
+                var yOC = (this.radius * Math.sin(angle)) + this.y;
+                ctx.lineTo(xOC, yOC);
+
+                angle = (Math.PI/4) + 1.57;
+                ctx.moveTo(this.x, this.y);
+                var xOC = (this.radius * Math.cos(angle)) + this.x;
+                var yOC = (this.radius * Math.sin(angle)) + this.y;
+                ctx.lineTo(xOC, yOC);
+
+                angle = (Math.PI/4 + 3.14);
+                ctx.moveTo(this.x, this.y);
+                var xOC = (this.radius * Math.cos(angle)) + this.x;
+                var yOC = (this.radius * Math.sin(angle)) + this.y;
+                ctx.lineTo(xOC, yOC);
+               
+                angle = (Math.PI/4 + 4.71);
+                ctx.moveTo(this.x, this.y);
+                var xOC = (this.radius * Math.cos(angle)) + this.x;
+                var yOC = (this.radius * Math.sin(angle)) + this.y;
+                ctx.lineTo(xOC, yOC);
+
                 ctx.stroke();
-
-                // Convert cartesian to Polar
-                var polarRadius = Math.sqrt(this.x*this.x + this.y*this.y);
-                var polarAngle = Math.atan2(this.y,this.x);
-
-                // Draw lines through circle using polar coordinates
-                var centerX = this.x;
-                var centerY = this.y;
-                var circleRadius = this.radius;
-
-                var lineLength = this.radius; // Length of the lines
-
-                // Draw lines at 45-degrees through circle
-                for (let i = 0; i < 2; i++) {
-                  var angle = polarAngle + (i === 0 ? Math.PI /4 : -Math.PI / 4); // Gotten off stackOverflow
-                  var startX = centerX + this.radius * Math.cos(angle);
-                  var startY = centerY + this.radius * Math.sin(angle);
-                  var endX = centerX + lineLength * Math.cos(angle - Math.PI);
-                  var endY = centerY + lineLength * Math.sin(angle - Math.PI);
-
-                  ctx.beginPath();
-                  ctx.moveTo(startX, startY);
-                  ctx.lineTo(endX, endY);
-                  ctx.lineWidth = 2;
-                  ctx.strokeStyle = "red";
-                  ctx.stroke();
-                  
-                }
             }
 
             move(){
               // Move vertically and horizontally
                 this.y += this.yVelocity;
-                this.x += this.xVelocity;
+                //this.x += this.xVelocity;
+                this.y += this.ySpeed;
+                this.ySpeed += 0.5;
 
               // Rotate
-              this.angle += this.angle +1.1;
-
-                var xCap = 10;
-                // Resets velocity
-                if (this.xVelocity >= xCap)
-                {
-                  this.xVelocity = 1;
-                }
-                if (this.yVelocity >= xCap)
-                {
-                  this.yVelocity = 1;
-                }
+              //this.angle += this.angle +1.1;
 
                 // Bounce on Y canvas bottom
                 if(this.y >= 500-this.radius)
                 {
                     this.yVelocity *= -1.1;
                     this.angle *= -1.1;
+                    this.ySpeed = this.ySpeed* -1;
                 }
 
                 // Bounce on Y canvas top
@@ -127,6 +117,7 @@
                 {
                     this.yVelocity *= -1.1;
                     this.angle *= -1.1;
+                    this.ySpeed = this.ySpeed* -1;
                 }
 
                 // Bounce on X canvas right side
@@ -134,6 +125,7 @@
                 {
                   this.xVelocity *= -1.1;
                   this.angle *= -1.1;
+                  this.ySpeed = this.ySpeed* -1;
                 }
 
                 // Bounce on X canvas left side
@@ -141,6 +133,7 @@
                 {
                   this.xVelocity *= -1-1;
                   this.angle *= -1.1;
+                  this.ySpeed = this.ySpeed* -1;
                 }
               
             }
