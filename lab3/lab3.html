@@ -23,11 +23,19 @@
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
 
     <script type="text/javascript">
+
         
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
+
+      var canvasPosition = {
+        x: canvas.offsetLeft,
+        y: canvas.offsetTop
+      }
+      var noClicks = 0;
+
 
 	  class Paddle {
 		constructor(x, y) {
@@ -136,12 +144,14 @@
                 }
               
             }
+
+            
       }
 
       // Construct instances of the balls
       const b1 = new Ball(20, 20, 4, 8, 15);
       const b2 = new Ball(50, 50, 2, 5, 10);
-	  const p1 = new Paddle(20,20);
+	    const p1 = new Paddle(10,40);
       // A function to repeat every time the animation loops.
       function repeatme() {
         // Clear canvas
@@ -195,6 +205,19 @@
 			}
 
 		});
+
+    // Mouse for paddle
+    canvas.addEventListener("mousemove", function(event) { 
+        console.log("Global: "+ event.clientX, event.clientY);
+        console.log("Local: " + canvasPosition.x, canvasPosition.y);
+
+        var mouse = { 
+          x: event.clientX - canvasPosition.x,
+          y: event.clientY - canvasPosition.y
+        };
+
+        p1.y = mouse.y;
+    });
     </script>
 
   </body>
