@@ -67,6 +67,15 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 
+                // Bottom Right lines
+                var x1 = this.x+(this.radius*Math.cos((7*Math.PI/4)));
+                var y1 = this.y+(this.radius*Math.sin((7*Math.PI/4)));
+                ctx.moveTo(x1,y1);
+
+                //Top Left lines
+                var x2 = this.x+(this.radius*Math.cos((3*Math.PI/4)));
+                var y2 = this.y+(this.radius*Math.sin((3*Math.PI/4)));
+                /*
                 var angle = (Math.PI/4);
                 ctx.moveTo(this.x, this.y);
                 var xOC = (this.radius * Math.cos(angle)) + this.x;
@@ -91,6 +100,7 @@
                 var yOC = (this.radius * Math.sin(angle)) + this.y;
                 ctx.lineTo(xOC, yOC);
 
+                */
                 ctx.stroke();
             }
 
