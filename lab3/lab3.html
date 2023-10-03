@@ -36,7 +36,7 @@
 		}
 
 		draw(){
-			ctx.fillRect(30, 30, 20, 20);
+			ctx.fillRect(this.x, this.y, 20, 20);
 		}
 
 		move(){
@@ -149,12 +149,11 @@
         // Draw the balls (stroked, not filled).
         b1.draw();
         b2.draw();
-		p1.draw();
+		    p1.draw();
         
         // Move the balls
         b1.move();
         b2.move();
-		p1.move();
 
         window.requestAnimationFrame(repeatme);
       }
@@ -178,7 +177,7 @@
 				break;
 
 			// key code for top arrow
-			case 36:
+			case 38:
 				console.log('top arrow key pressed!');
 				p1.y = p1.y - 10;
 				break;
@@ -191,7 +190,7 @@
 			// key code for bottom arrow
 			case 40:
 				console.log('bottem arrow key pressed');
-				p1.y = p1.y + 500;
+				p1.y = p1.y + 10;
         break;
 			}
 
