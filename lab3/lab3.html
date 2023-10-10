@@ -91,46 +91,56 @@
             }
 
             move(){
-              // Move vertically and horizontally
+              // Move horizontally
               
-                this.y += this.yVelocity;
-                this.x += this.xVelocity;
+                //this.x += this.xVelocity;
                 
 
-                //update the y location
-                /*
-                this.y += this.ySpeed;
-                this.ySpeed += 0.5;
-                */
+                // Vertical Acceleration
+                this.y += this.yVelocity;
+                this.yVelocity += 0.5;
+
+                if (this.y > canvas.height)
+                {
+                  this.yVelocity = this.yVelocity* -0.9;
+                }
+                if(this.y < 0) {
+                  this.yVelocity = this.yVelocity* -0.9;
+                }
+                
 
               // Rotate
               this.spin += 0.2;
 
               
-                var xCap = 10;
+                /*
+                var xCap = 25;
+                var yCap = 25;
                 // Resets velocity
                 if (this.xVelocity >= xCap)
                 {
                   this.xVelocity = 1;
                 }
-                if (this.yVelocity >= xCap)
+                if (this.yVelocity >= yCap)
                 {
                   this.yVelocity = 1;
                 }
+                */
                 
 
                 // Bounce on Y canvas bottom
+                
                 if(this.y >= 500-this.radius)
                 {
-                    this.yVelocity *= -1.1;
-                    this.spin *= -1.1;
+                    //this.yVelocity *= -1.1;
+                    //this.spin *= -1.1;
                 }
 
                 // Bounce on Y canvas top
                 if(this.y < 0+this.radius)
                 {
-                    this.yVelocity *= -1.1;
-                    this.spin *= -1.1;
+                    //this.yVelocity *= -1.1;
+                    //this.spin *= -1.1;
                 }
 
                 // Bounce on X canvas right side
@@ -153,8 +163,8 @@
       }
 
       // Construct instances of the balls
-      const b1 = new Ball(20, 20, 1, 1, 15);
-      const b2 = new Ball(50, 50, 2, 2, 10);
+      const b1 = new Ball(20, 20, 6, 6, 15);
+      const b2 = new Ball(50, 50, 8, 8, 10);
 	    const p1 = new Paddle(10,40);
       const p2 = new Paddle(480, 470)
       // A function to repeat every time the animation loops.
