@@ -50,6 +50,7 @@
 		move(){
 
 		}
+
 	  }
 
       class Ball {
@@ -59,7 +60,7 @@
                 this.yVelocity = yVelocity;
                 this.xVelocity = xVelocity;
                 this.radius = radius;
-                this.value = 0;
+                this.spin = 0;
             }
 
             draw(){
@@ -67,7 +68,7 @@
                 ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 
                 // draws 4 lines to center for symbol
-                var rotation = this.value*(Math.PI/180);
+                var rotation = this.spin*(Math.PI/180);
 
                 // Bottom Right lines
                 var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
@@ -103,7 +104,7 @@
                 */
 
               // Rotate
-              this.value += 0.5;
+              this.spin += 0.2;
 
               
                 var xCap = 10;
@@ -122,28 +123,28 @@
                 if(this.y >= 500-this.radius)
                 {
                     this.yVelocity *= -1.1;
-                    this.value *= -1.1;
+                    this.spin *= -1.1;
                 }
 
                 // Bounce on Y canvas top
                 if(this.y < 0+this.radius)
                 {
                     this.yVelocity *= -1.1;
-                    this.value *= -1.1;
+                    this.spin *= -1.1;
                 }
 
                 // Bounce on X canvas right side
                 if(this.x >=500-this.radius)
                 {
                   this.xVelocity *= -1.1;
-                  this.value *= -1.1;
+                  this.spin *= -1.1;
                 }
 
                 // Bounce on X canvas left side
                 if(this.x < 0+this.radius)
                 {
                   this.xVelocity *= -1.1;
-                  this.value *= -1.1;
+                  this.spin *= -1.1;
                 }
               
             }
@@ -152,8 +153,8 @@
       }
 
       // Construct instances of the balls
-      const b1 = new Ball(20, 20, 4, 8, 15);
-      const b2 = new Ball(50, 50, 2, 5, 10);
+      const b1 = new Ball(20, 20, 1, 1, 15);
+      const b2 = new Ball(50, 50, 2, 2, 10);
 	    const p1 = new Paddle(10,40);
       const p2 = new Paddle(480, 470)
       // A function to repeat every time the animation loops.
@@ -219,15 +220,23 @@
         break;
 
       // Increase spin speed
-      case 97:
-        b1.value = b1.value +1;
-        b2.value = b2.value +1
+      case 67:
+        console.log("b1 spin is currently " + b1.spin);
+        console.log("b2 spin is currently " + b2.spin);
+        b1.spin = b1.spin +1;
+        b2.spin = b2.spin +1;
+        console.log("b1 Spin increased to "+ b1.spin);
+        console.log("b2 Spin increased to " + b2.spin);
         break;
       
       // decrease spin speed
-      case 69:
-        b1.value = b1.value +1;
-        b2.value = b2.value +1;
+      case 88:
+        console.log("b1 spin is currently " + b1.spin);
+        console.log("b2 spin is currently " + b2.spin);
+        b1.spin = b1.spin -1;
+        b2.spin = b2.spin -1;
+        console.log("b1 Spin decreased to "+ b1.spin);
+        console.log("b2 Spin decreased to " + b2.spin);
         break;
 
 			}
