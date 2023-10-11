@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+      canvas {
+        border: 3px solid black;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <h1>Shane Walsh</h1>
+    <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+
+    <script type="text/javascript">
+
+        
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("canvas-for-ball");
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+
+      var canvasPosition = {
+        x: canvas.offsetLeft,
+        y: canvas.offsetTop
+      }
+      var noClicks = 0;
+
+
+	  class Paddle {
+		constructor(x, y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		draw(){
+			ctx.fillRect(this.x, this.y, 20, 20);
+		}
+
+		move(){
+
+		}
+
+	  }
+
+      class Ball {
+            constructor(x, y, yVelocity, xVelocity, radius) {
+                this.x = x;
+                this.y = y;
+                this.yVelocity = yVelocity;
+                this.xVelocity = xVelocity;
+                this.radius = radius;
+                this.spin = 0;
+            }
+
+            draw(){
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+
+                // draws 4 lines to center for symbol
+                var rotation = this.spin*(Math.PI/180);
+
+                // Bottom Right lines
+                var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
+                var y1 = this.y+(this.radius*Math.sin(((7*Math.PI)/4)+rotation));
+                ctx.moveTo(x1,y1);
+
+                var x2 = this.x+(this.radius*Math.cos(((3*Math.PI)/4)+rotation));
+                var y2 = this.y+(this.radius*Math.sin(((3*Math.PI)/4)+rotation));
+                ctx.lineTo(x2, y2);
+
+                // Top right lines
+                var x3 = this.x+(this.radius*Math.cos(((5*Math.PI)/4)+rotation));
+                var y3 = this.y+(this.radius*Math.sin(((5*Math.PI)/4)+rotation));
+                ctx.moveTo(x3,y3);
+
+                var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
+                var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
+                ctx.lineTo(x4, y4);
+                ctx.stroke();
+            }
+
+            move(){
+              // Move horizontally
+              
+                this.x += this.xVelocity;
+                this.y += this.yVelocity;
+                
+
+                // Vertical Acceleration
+                //this.y += this.yVelocity;
+                /*
+                this.yVelocity += 0.5;
+
+                if (this.y > canvas.height)
+                {
+                  this.yVelocity = this.yVelocity* -0.9;
+                }
+                if(this.y < 0) {
+                  this.yVelocity = this.yVelocity* -0.9;
+                }
+                */
+                
+
+              // Rotate
+              this.spin += 0.2;
+
+              
+                
+                var xCap = 25;
+                var yCap = 25;
+                // Resets velocity
+                if (this.xVelocity >= xCap)
+                {
+                  this.xVelocity = 1;
+                }
+                if (this.yVelocity >= yCap)
+                {
+                  this.yVelocity = 1;
+                }
+                
+                
+
+                // Bounce on Y canvas bottom
+                
+                if(this.y >= 500-this.radius)
+                {
+                  this.yVelocity *= -1.1;
+                  this.spin *= -1.1;
+                }
+
+                // Bounce on Y canvas top
+                if(this.y < 0+this.radius)
+                {
+                  this.yVelocity *= -1.1;
+                  this.spin *= -1.1;
+                }
+
+                // Bounce on X canvas right side
+                if(this.x >=500-this.radius)
+                {
+                  this.xVelocity *= -1.1;
+                  this.spin *= -1.1;
+                }
+
+                // Bounce on X canvas left side
+                if(this.x < 0+this.radius)
+                {
+                  this.xVelocity *= -1.1;
+                  this.spin *= -1.1;
+                }
+              
+            }
+
+            
+      }
+
+      // Construct instances of the balls
+      const b1 = new Ball(20, 20, 6, 4, 15);
+      const b2 = new Ball(50, 50, 8, 3, 10);
+	    const p1 = new Paddle(10,40);
+      const p2 = new Paddle(480, 470)
+      // A function to repeat every time the animation loops.
+      function repeatme() {
+        // Clear canvas
+        ctx.clearRect(0, 0, 500, 500);
+        // Draw the balls (stroked, not filled).
+        b1.draw();
+        b2.draw();
+		    p1.draw();
+        p2.draw();
+        
+        // Move the balls
+        b1.move();
+        b2.move();
+
+        window.requestAnimationFrame(repeatme);
+      }
+      
+      // Get the animation going.
+      repeatme();
+
+	  // Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		});
+
+		//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			// key code for left arrow
+			case 37:
+				console.log('left arrow key pressed!');
+				break;
+
+			// key code for top arrow
+			case 38:
+				console.log('top arrow key pressed!');
+				p1.y = p1.y - 10;
+				break;
+
+			// key code for right arrow
+			case 39:
+				console.log('right arrow key pressed!');
+				break;
+			
+			// key code for bottom arrow
+			case 40:
+				console.log('bottem arrow key pressed');
+				p1.y = p1.y + 10;
+        break;
+
+      // second paddle up
+      case 87: 
+        p2.y = p2.y - 10;
+        break;
+
+      // second paddle down
+      case 83: 
+        p2.y = p2.y + 10;
+        break;
+
+      // Increase spin speed
+      case 67:
+        console.log("b1 spin is currently " + b1.spin);
+        console.log("b2 spin is currently " + b2.spin);
+        b1.spin = b1.spin +1;
+        b2.spin = b2.spin +1;
+        console.log("b1 Spin increased to "+ b1.spin);
+        console.log("b2 Spin increased to " + b2.spin);
+        break;
+      
+      // decrease spin speed
+      case 88:
+        console.log("b1 spin is currently " + b1.spin);
+        console.log("b2 spin is currently " + b2.spin);
+        b1.spin = b1.spin -1;
+        b2.spin = b2.spin -1;
+        console.log("b1 Spin decreased to "+ b1.spin);
+        console.log("b2 Spin decreased to " + b2.spin);
+        break;
+
+			}
+
+		});
+
+    // Mouse for paddle
+    canvas.addEventListener("mousemove", function(event) { 
+        console.log("Global: "+ event.clientX, event.clientY);
+        console.log("Local: " + canvasPosition.x, canvasPosition.y);
+
+        var mouse = { 
+          x: event.clientX - canvasPosition.x,
+          y: event.clientY - canvasPosition.y
+        };
+
+        p1.y = mouse.y;
+        p2.y = mouse.y;
+    });
+    </script>
+
+  </body>
+
+</html>
