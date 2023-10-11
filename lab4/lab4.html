@@ -38,13 +38,18 @@
 
 
 	  class Paddle {
-		constructor(x, y) {
+		constructor(x, y, radius) {
 			this.x = x;
 			this.y = y;
+      this.radius = radius;
 		}
 
 		draw(){
-			ctx.fillRect(this.x, this.y, 20, 20);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#0000FF";
+      ctx.stroke();
+
 		}
 
 		move(){
@@ -87,6 +92,9 @@
                 var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
                 var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
                 ctx.lineTo(x4, y4);
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#FF0000";
                 ctx.stroke();
             }
 
@@ -168,8 +176,8 @@
       // Construct instances of the balls
       const b1 = new Ball(20, 20, 6, 4, 15);
       const b2 = new Ball(50, 50, 8, 3, 10);
-	    const p1 = new Paddle(10,40);
-      const p2 = new Paddle(480, 470)
+	    const p1 = new Paddle(10, 40, 25);
+      const p2 = new Paddle(480, 470, 25);
       // A function to repeat every time the animation loops.
       function repeatme() {
         // Clear canvas
@@ -269,6 +277,10 @@
         p1.y = mouse.y;
         p2.y = mouse.y;
     });
+
+    
+
+
     </script>
 
   </body>
