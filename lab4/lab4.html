@@ -262,19 +262,28 @@
         console.log("b2 Spin decreased to " + b2.spin);
         break;
 
-        // Increase speed - m
+        // Increase speed - n
       case 78:
+        console.log("b1 speed is currently " + b1.xVelocity);
+        console.log("b2 speed is currently " + b2.xVelocity);
         b1.xVelocity = b1.xVelocity +1;
         b1.yVelocity = b1.yVelocity +1;
         b2.xVelocity = b2.xVelocity +1;
         b2.yVelocity = b2.yVelocity +1;
+        console.log("b1 Speed increased to " + b1.xVelocity);
+        console.log("b2 Speed increased to " + b2.xVelocity);
         break;
       
+        // decrease speed - m
       case 77:
+        console.log("b1 speed is currently " + b1.xVelocity);
+        console.log("b2 speed is currently " + b2.xVelocity);
         b1.xVelocity = b1.xVelocity -1;
         b1.yVelocity = b1.yVelocity -1;
         b2.xVelocity = b2.xVelocity -1;
         b2.yVelocity = b2.yVelocity -1;
+        console.log("b1 Speed decreased to " + b1.xVelocity);
+        console.log("b2 Speed decreased to " + b2.xVelocity);
         break;
 
 			}
