@@ -308,18 +308,24 @@
     function collisionDetect(){
       var distance = 0;
 
-      distance = Math.sqrt(Math.pow(b1.x-b2.x, 2) + Math.pow(b1.y-b2.y, 2));
+      distance = Math.sqrt(Math.pow(p1.x-b1.x, 2) + Math.pow(p1.y-b1.y, 2));
 
       if(distance < p1.radius+b1.radius)
       {
         console.log("Collided");
       }
 
-
+      /*
       if(distance < p2.radius+b2.radius)
       {
         console.log("Collided");
       }
+      */
+    }
+
+    function collisionReact(){
+
+      
     }
 
 
