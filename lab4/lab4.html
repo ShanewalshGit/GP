@@ -278,7 +278,14 @@
         p2.y = mouse.y;
     });
 
-    
+    // Collision function
+    function collisionDetect(){
+      var distance = 0;
+
+      distance = Math.sqrt(Math.pow(b1.x-b2.x, 2) + Math.pow(b1.y-b2.y, 2));
+
+      console.log(distance);
+    }
 
 
     </script>
