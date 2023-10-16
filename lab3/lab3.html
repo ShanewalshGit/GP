@@ -97,7 +97,7 @@
                 //this.x += this.xVelocity;
                 
 
-                // Vertical Acceleration
+              // Vertical Acceleration
               if (this.isFalling) {
                 this.y += this.yVelocity;
                 this.yVelocity += 0.35;
@@ -106,19 +106,23 @@
                   this.y = canvas.height - this.radius;
                   this.yVelocity *= -0.7;
                 }
-              } else {
-                // If it's not falling, gradually decrease yVelocity to simulate coming to a halt
-                this.yVelocity *= 0.7;
+              }
 
-                // if velocity is very low, stop bouncing
-                if (Math.abs(this.yVelocity) < 1) {
-                  this.yVelocity = 0;
-                  this.isFalling = false;
-                }
+              if(this.y < 0+this.radius){
+                this.yVelocity = yVelocity* -0.7;
+              }
+
+              // if velocity is very low, stop bouncing
+              if (Math.abs(this.yVelocity) < 0.1) {
+                this.yVelocity = 0;
               }
 
               // Rotate
               this.spin += 0.2;
+
+              if(Math.abs(this.yVelocity) < 0.1 && this.y > canvas.height - this.radius){
+                this.isFalling = false;
+              }
 
 
                 /*
