@@ -94,14 +94,14 @@
             move(){
               // Move horizontally
               
-                //this.x += this.xVelocity;
                 
 
               // Vertical Acceleration
               if (this.isFalling) {
                 this.y += this.yVelocity;
+                this.x += this.xVelocity;
                 this.yVelocity += 0.35;
-
+                
                 // Rotate
                 this.spin += 0.2;
 
@@ -114,7 +114,7 @@
                 this.yVelocity = yVelocity* -0.7;
               }
 
-              // if velocity is very low, stop bouncing
+              // if yVelocity is very low, stop bouncing
               if (Math.abs(this.yVelocity) < 0.1) {
                 this.yVelocity = 0;
                 this.spin = 0;
@@ -125,22 +125,27 @@
               if(Math.abs(this.yVelocity) < 0.1 && this.y > canvas.height - this.radius){
                 this.isFalling = false;
               }
-
-
+              
                 
-                // Bounce on X canvas right side
-                if(this.x >=500-this.radius)
-                {
-                  this.xVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
+              // Bounce on X canvas right side
+              if(this.x >=500-this.radius)
+              {
+                this.xVelocity *= -0.7;
+                this.spin *= -0.7;
+              }
 
-                // Bounce on X canvas left side
-                if(this.x < 0+this.radius)
-                {
-                  this.xVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
+              // Bounce on X canvas left side
+              if(this.x < 0+this.radius)
+              {
+                this.xVelocity *= -0.7;
+                this.spin *= -0.7;
+              }
+
+              // if xVelocity is very low, stop bouncing
+              if (Math.abs(this.xVelocity) < 0.1) {
+                this.xVelocity = 0;
+                this.spin = 0;
+              }
                 
             }
 
@@ -148,7 +153,7 @@
       }
 
       // Construct instances of the balls
-      const b1 = new Ball(250, 20, 2, 6, 15);
+      const b1 = new Ball(250, 20, 2, 8, 15);
       const b2 = new Ball(270, 50, 4, 8, 10);
 	    const p1 = new Paddle(10,40);
       const p2 = new Paddle(480, 470)
