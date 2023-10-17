@@ -318,7 +318,16 @@
     }
 
     function collisionReact(){
+      var dx, dy;
+      var collision_angle;
+      dx = p1.x - b1.x;
+      dy = p1.y - b1.y;
+      collision_angle = Math.atan2(dy,dx);
 
+      var magnitude1 = Math.sqrt(p1.xVelocity*p1.xVelocity+p1.yVelocity*p1.yVelocity);
+      var magnitude2 = Math.sqrt(b1.xVelocity*b1.xVelocity+b1.yVelocity*b1.yVelocity);
+
+      
       
     }
 
