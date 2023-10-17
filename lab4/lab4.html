@@ -184,14 +184,15 @@
         ctx.clearRect(0, 0, 500, 500);
         // Draw the balls (stroked, not filled).
         b1.draw();
-        b2.draw();
+        //b2.draw();
 		    p1.draw();
         p2.draw();
         
         // Move the balls
         b1.move();
-        b2.move();
+        //b2.move();
 
+        // Detect collisions
         collisionDetect();
 
         window.requestAnimationFrame(repeatme);
@@ -310,17 +311,11 @@
 
       distance = Math.sqrt(Math.pow(p1.x-b1.x, 2) + Math.pow(p1.y-b1.y, 2));
 
-      if(distance < p1.radius+b1.radius)
+      if(distance <= p1.radius+b1.radius)
       {
-        console.log("Collided");
+        console.log("Balls Collided");
+        
       }
-
-      /*
-      if(distance < p2.radius+b2.radius)
-      {
-        console.log("Collided");
-      }
-      */
     }
 
     function collisionReact(){
