@@ -102,8 +102,10 @@
                 this.y += this.yVelocity;
                 this.yVelocity += 0.35;
 
+                // Rotate
+                this.spin += 0.2;
+
                 if (this.y > canvas.height - this.radius) {
-                  this.y = canvas.height - this.radius;
                   this.yVelocity *= -0.7;
                 }
               }
@@ -115,17 +117,17 @@
               // if velocity is very low, stop bouncing
               if (Math.abs(this.yVelocity) < 0.1) {
                 this.yVelocity = 0;
+                this.spin = 0;
               }
 
-              // Rotate
-              this.spin += 0.2;
+              
 
               if(Math.abs(this.yVelocity) < 0.1 && this.y > canvas.height - this.radius){
                 this.isFalling = false;
               }
 
 
-                /*
+                
                 // Bounce on X canvas right side
                 if(this.x >=500-this.radius)
                 {
@@ -139,7 +141,7 @@
                   this.xVelocity *= -1.1;
                   this.spin *= -1.1;
                 }
-                */
+                
             }
 
             
