@@ -106,11 +106,13 @@
                 // Rotate
                 this.spin += 0.2;
 
+                // if hits bottom of canvas
                 if (this.y > canvas.height - this.radius) {
                   this.yVelocity *= -0.7;
                 }
               }
 
+              // if hits top of canvas
               if(this.y < 0+this.radius){
                 this.yVelocity = yVelocity* -0.7;
               }
@@ -121,8 +123,7 @@
                 this.spin = 0;
               }
 
-              
-
+              // if velocity is very low, stop isFalling condition
               if(Math.abs(this.yVelocity) < 0.1 && this.y > canvas.height - this.radius){
                 this.isFalling = false;
               }
