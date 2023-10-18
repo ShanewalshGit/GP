@@ -20,7 +20,7 @@
 
   <body>
     <h1>Shane Walsh</h1>
-    <h3 id="timerMessage" text-align="center"></h3>
+    <h3 id="timerMessage" style="text-align: center;"></h3>
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
 
     <script type="text/javascript">
@@ -61,124 +61,124 @@
 	  }
 
       class Ball {
-            constructor(x, y, yVelocity, xVelocity, radius, mass) {
-                this.x = x;
-                this.y = y;
-                this.yVelocity = yVelocity;
-                this.xVelocity = xVelocity;
-                this.radius = radius;
-                this.spin = 0;
-                this.mass = mass;
+        constructor(x, y, yVelocity, xVelocity, radius, mass) {
+            this.x = x;
+            this.y = y;
+            this.yVelocity = yVelocity;
+            this.xVelocity = xVelocity;
+            this.radius = radius;
+            this.spin = 0;
+            this.mass = mass;
+        }
+
+        draw(){
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+
+            // draws 4 lines to center for symbol
+            var rotation = this.spin*(Math.PI/180);
+
+            // Bottom Right lines
+            var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
+            var y1 = this.y+(this.radius*Math.sin(((7*Math.PI)/4)+rotation));
+            ctx.moveTo(x1,y1);
+
+            var x2 = this.x+(this.radius*Math.cos(((3*Math.PI)/4)+rotation));
+            var y2 = this.y+(this.radius*Math.sin(((3*Math.PI)/4)+rotation));
+            ctx.lineTo(x2, y2);
+
+            // Top right lines
+            var x3 = this.x+(this.radius*Math.cos(((5*Math.PI)/4)+rotation));
+            var y3 = this.y+(this.radius*Math.sin(((5*Math.PI)/4)+rotation));
+            ctx.moveTo(x3,y3);
+
+            var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
+            var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
+            ctx.lineTo(x4, y4);
+
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#FF0000";
+            ctx.stroke();
+        }
+
+        move(){
+          // Move horizontally
+          
+            this.x += this.xVelocity;
+            this.y += this.yVelocity;
+            
+
+            // Vertical Acceleration
+            //this.y += this.yVelocity;
+            /*
+            this.yVelocity += 0.5;
+
+            if (this.y > canvas.height)
+            {
+              this.yVelocity = this.yVelocity* -0.9;
+            }
+            if(this.y < 0) {
+              this.yVelocity = this.yVelocity* -0.9;
+            }
+            */
+            
+
+          // Rotate
+          this.spin += 0.2;
+
+          
+            
+            var xCap = 25;
+            var yCap = 25;
+            // Resets velocity
+            if (this.xVelocity >= xCap)
+            {
+              this.xVelocity = 1;
+            }
+            if (this.yVelocity >= yCap)
+            {
+              this.yVelocity = 1;
+            }
+            
+            
+
+            // Bounce on Y canvas bottom
+            
+            if(this.y >= 500-this.radius)
+            {
+              this.yVelocity *= -1.1;
+              this.spin *= -1.1;
             }
 
-            draw(){
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-
-                // draws 4 lines to center for symbol
-                var rotation = this.spin*(Math.PI/180);
-
-                // Bottom Right lines
-                var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
-                var y1 = this.y+(this.radius*Math.sin(((7*Math.PI)/4)+rotation));
-                ctx.moveTo(x1,y1);
-
-                var x2 = this.x+(this.radius*Math.cos(((3*Math.PI)/4)+rotation));
-                var y2 = this.y+(this.radius*Math.sin(((3*Math.PI)/4)+rotation));
-                ctx.lineTo(x2, y2);
-
-                // Top right lines
-                var x3 = this.x+(this.radius*Math.cos(((5*Math.PI)/4)+rotation));
-                var y3 = this.y+(this.radius*Math.sin(((5*Math.PI)/4)+rotation));
-                ctx.moveTo(x3,y3);
-
-                var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
-                var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
-                ctx.lineTo(x4, y4);
-
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = "#FF0000";
-                ctx.stroke();
+            // Bounce on Y canvas top
+            if(this.y < 0+this.radius)
+            {
+              this.yVelocity *= -1.1;
+              this.spin *= -1.1;
             }
 
-            move(){
-              // Move horizontally
-              
-                this.x += this.xVelocity;
-                this.y += this.yVelocity;
-                
-
-                // Vertical Acceleration
-                //this.y += this.yVelocity;
-                /*
-                this.yVelocity += 0.5;
-
-                if (this.y > canvas.height)
-                {
-                  this.yVelocity = this.yVelocity* -0.9;
-                }
-                if(this.y < 0) {
-                  this.yVelocity = this.yVelocity* -0.9;
-                }
-                */
-                
-
-              // Rotate
-              this.spin += 0.2;
-
-              
-                
-                var xCap = 25;
-                var yCap = 25;
-                // Resets velocity
-                if (this.xVelocity >= xCap)
-                {
-                  this.xVelocity = 1;
-                }
-                if (this.yVelocity >= yCap)
-                {
-                  this.yVelocity = 1;
-                }
-                
-                
-
-                // Bounce on Y canvas bottom
-                
-                if(this.y >= 500-this.radius)
-                {
-                  this.yVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
-
-                // Bounce on Y canvas top
-                if(this.y < 0+this.radius)
-                {
-                  this.yVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
-
-                // Bounce on X canvas right side
-                if(this.x >=500-this.radius)
-                {
-                  this.xVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
-
-                // Bounce on X canvas left side
-                if(this.x < 0+this.radius)
-                {
-                  this.xVelocity *= -1.1;
-                  this.spin *= -1.1;
-                }
-              
+            // Bounce on X canvas right side
+            if(this.x >=500-this.radius)
+            {
+              this.xVelocity *= -1.1;
+              this.spin *= -1.1;
             }
+
+            // Bounce on X canvas left side
+            if(this.x < 0+this.radius)
+            {
+              this.xVelocity *= -1.1;
+              this.spin *= -1.1;
+            }
+          
+        }
 
             
       }
 
       // Construct instances of the balls
       const b1 = new Ball(20, 20, 6, 4, 15, 20);
-      const b2 = new Ball(50, 50, 8, 3, 10, 20);
+      //const b2 = new Ball(50, 50, 8, 3, 10, 20);
 	    const p1 = new Paddle(10, 40, 25, 100);
       const p2 = new Paddle(480, 470, 25, 100);
       // A function to repeat every time the animation loops.
@@ -334,46 +334,45 @@
       document.getElementById("timerMessage").innerHTML = "";
     }
     
-    function collisionReact(obj1, obj2) {
+    function collisionReact(paddle, ball) {
       console.log("Entered CollisionReact");
       
 
-      /*
+      
       // Once collision is detected, handle the collision
-      dx = obj1.x - obj2.x; // Calculate horizontal distance between objects
-      dy = obj1.y - obj2.y; // Calculate vertical distance between objects
+      dx = paddle.x - ball.x; // Calculate horizontal distance between objects
+      dy = paddle.y - ball.y; // Calculate vertical distance between objects
       collisionAngle = Math.atan2(dy, dx); // Calculate collision angle using trig
       
       
       // Calculate each object's speed as magnitude
-      magnitude1 = Math.sqrt(obj1.xVelocity*obj1.xVelocity+obj1.yVelocity*obj1.yVelocity);
-      magnitude2 = Math.sqrt(obj2.xVelocity*obj2.xVelocity+obj2.yVelocity*obj2.yVelocity);
-      
+      magnitude1 = Math.sqrt(ball.xVelocity*ball.xVelocity+ball.yVelocity*ball.yVelocity);
+      magnitude2 = Math.sqrt(paddle.xVelocity*paddle.xVelocity+paddle.yVelocity*paddle.yVelocity);
       
       // Determine objects' direction using trig
-      direction1 = Math.atan2(obj1.yVelocity, obj1.xVelocity);
-      direction2 = Math.atan2(obj2.yVelocity, obj2.xVelocity);
+      direction1 = Math.atan2(ball.yVelocity, ball.xVelocity);
+      direction2 = Math.atan2(paddle.yVelocity, paddle.xVelocity);
+
       // Calculate new xVel using trig applied to the difference between the direction angle and the collision angle
-      
-      
       newXVel1 = magnitude1 * Math.cos(direction1-collisionAngle);
       newYVel1 = magnitude1 * Math.sin(direction1-collisionAngle);
       newXVel2 = magnitude2 * Math.cos(direction2-collisionAngle);
       newYVel2 = magnitude2 * Math.sin(direction2-collisionAngle);
-      // Determine final x speed for objects
       
-      finalXVel1 = ((obj1.mass-obj2.mass)*newXVel1+(obj2.mass+obj2.mass)*newXVel2)/(obj1.mass+obj2.mass);
-      finalXVel2 = ((obj1.mass-obj1.mass)*newXVel1+(obj2.mass+obj1.mass)*newXVel2)/(obj1.mass+obj2.mass);
+      // Determine final x speed for objects
+      finalXVel1 = ((ball.mass-paddle.mass)*newXVel1+(paddle.mass+paddle.mass)*newXVel2)/(ball.mass+paddle.mass);
+      finalXVel2 = ((ball.mass-ball.mass)*newXVel1+(paddle.mass+ball.mass)*newXVel2)/(ball.mass+paddle.mass);
       // y speed does not change (it's a 1D collision)
       finalYVel1 = newYVel1;
       finalYVel2 = newYVel2;
       
+      
       // Determine x and y speeds on the original axis system using trig.
-      obj1.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
-      obj1.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
-      obj2.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
-      obj2.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
-      */
+      ball.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
+      ball.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
+      paddle.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
+      paddle.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
+      
     }
     
 
