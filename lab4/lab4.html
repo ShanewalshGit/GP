@@ -20,6 +20,7 @@
 
   <body>
     <h1>Shane Walsh</h1>
+    <h3 id="timerMessage" text-align="center"></h3>
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
 
     <script type="text/javascript">
@@ -316,50 +317,63 @@
       if(distance <= p1.radius+b1.radius)
       {
         console.log("Balls Collided");
+
+        //TimerMessage
+        timerVar = setTimeout(collisionMessage, 750);
+        setTimeout(clearMessage, 100);
+
         collisionReact(p1, b1);
       }
     }
 
+    function collisionMessage() {
+      document.getElementById("timerMessage").innerHTML = "Collision Detected";
+    }
+
+    function clearMessage() {
+      document.getElementById("timerMessage").innerHTML = "";
+    }
     
     function collisionReact(obj1, obj2) {
       console.log("Entered CollisionReact");
       
 
+      /*
       // Once collision is detected, handle the collision
-      var dx = obj1.x - obj2.x; // Calculate horizontal distance between objects
-      var dy = obj1.y - obj2.y; // Calculate vertical distance between objects
-      var collisionAngle = Math.atan2(dy, dx); // Calculate collision angle using trig
+      dx = obj1.x - obj2.x; // Calculate horizontal distance between objects
+      dy = obj1.y - obj2.y; // Calculate vertical distance between objects
+      collisionAngle = Math.atan2(dy, dx); // Calculate collision angle using trig
       
       
       // Calculate each object's speed as magnitude
-      var magnitude1 = Math.sqrt(obj1.xVelocity*obj1.xVelocity+obj1.yVelocity*obj1.yVelocity);
-      var magnitude2 = Math.sqrt(obj2.xVelocity*obj2.xVelocity+obj2.yVelocity*obj2.yVelocity);
+      magnitude1 = Math.sqrt(obj1.xVelocity*obj1.xVelocity+obj1.yVelocity*obj1.yVelocity);
+      magnitude2 = Math.sqrt(obj2.xVelocity*obj2.xVelocity+obj2.yVelocity*obj2.yVelocity);
       
       
       // Determine objects' direction using trig
-      var direction1 = Math.atan2(obj1.yVelocity, obj1.xVelocity);
-      var direction2 = Math.atan2(obj2.yVelocity, obj2.xVelocity);
+      direction1 = Math.atan2(obj1.yVelocity, obj1.xVelocity);
+      direction2 = Math.atan2(obj2.yVelocity, obj2.xVelocity);
       // Calculate new xVel using trig applied to the difference between the direction angle and the collision angle
       
       
-      var newXVel1 = magnitude1 * Math.cos(direction1-collisionAngle);
-      var newYVel1 = magnitude1 * Math.sin(direction1-collisionAngle);
-      var newXVel2 = magnitude2 * Math.cos(direction2-collisionAngle);
-      var newYVel2 = magnitude2 * Math.sin(direction2-collisionAngle);
+      newXVel1 = magnitude1 * Math.cos(direction1-collisionAngle);
+      newYVel1 = magnitude1 * Math.sin(direction1-collisionAngle);
+      newXVel2 = magnitude2 * Math.cos(direction2-collisionAngle);
+      newYVel2 = magnitude2 * Math.sin(direction2-collisionAngle);
       // Determine final x speed for objects
       
-      var finalXVel1 = ((obj1.mass-obj2.mass)*newXVel1+(obj2.mass+obj2.mass)*newXVel2)/(obj1.mass+obj2.mass);
-      var finalXVel2 = ((obj1.mass-obj1.mass)*newXVel1+(obj2.mass+obj1.mass)*newXVel2)/(obj1.mass+obj2.mass);
+      finalXVel1 = ((obj1.mass-obj2.mass)*newXVel1+(obj2.mass+obj2.mass)*newXVel2)/(obj1.mass+obj2.mass);
+      finalXVel2 = ((obj1.mass-obj1.mass)*newXVel1+(obj2.mass+obj1.mass)*newXVel2)/(obj1.mass+obj2.mass);
       // y speed does not change (it's a 1D collision)
-      var finalYVel1 = newYVel1;
-      var finalYVel2 = newYVel2;
+      finalYVel1 = newYVel1;
+      finalYVel2 = newYVel2;
       
       // Determine x and y speeds on the original axis system using trig.
       obj1.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
       obj1.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
       obj2.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
       obj2.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
-    
+      */
     }
     
 
