@@ -15,22 +15,19 @@
         border: 3px solid black;
       }
     </style>
-
   </head>
 
   <body>
     <h1>Shane Walsh</h1>
     <h3 id="timerMessage" style="text-align: center;"></h3>
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
-
+    <button onclick="createBall()">Add Ball</button>
+    
     <script type="text/javascript">
-
-        
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
-
       var canvasPosition = {
         x: canvas.offsetLeft,
         y: canvas.offsetTop
@@ -39,161 +36,159 @@
 
 
 	  class Paddle {
-		constructor(x, y, radius, mass) {
-			this.x = x;
-			this.y = y;
-      this.radius = radius;
-      this.mass = mass;
-		}
+      constructor(x, y, radius, mass) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.mass = mass;
+      }
 
-		draw(){
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "#0000FF";
-      ctx.stroke();
+      draw(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#0000FF";
+        ctx.stroke();
 
-		}
+      }
 
-		move(){
-
-		}
+      move(){
+        
+      }
 
 	  }
 
-      class Ball {
-        constructor(x, y, yVelocity, xVelocity, radius, mass) {
-            this.x = x;
-            this.y = y;
-            this.yVelocity = yVelocity;
-            this.xVelocity = xVelocity;
-            this.radius = radius;
-            this.spin = 0;
-            this.mass = mass;
-        }
+    var balls = [];
 
-        draw(){
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-
-            // draws 4 lines to center for symbol
-            var rotation = this.spin*(Math.PI/180);
-
-            // Bottom Right lines
-            var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
-            var y1 = this.y+(this.radius*Math.sin(((7*Math.PI)/4)+rotation));
-            ctx.moveTo(x1,y1);
-
-            var x2 = this.x+(this.radius*Math.cos(((3*Math.PI)/4)+rotation));
-            var y2 = this.y+(this.radius*Math.sin(((3*Math.PI)/4)+rotation));
-            ctx.lineTo(x2, y2);
-
-            // Top right lines
-            var x3 = this.x+(this.radius*Math.cos(((5*Math.PI)/4)+rotation));
-            var y3 = this.y+(this.radius*Math.sin(((5*Math.PI)/4)+rotation));
-            ctx.moveTo(x3,y3);
-
-            var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
-            var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
-            ctx.lineTo(x4, y4);
-
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#FF0000";
-            ctx.stroke();
-        }
-
-        move(){
-          // Move horizontally
-          
-            this.x += this.xVelocity;
-            this.y += this.yVelocity;
-            
-
-            // Vertical Acceleration
-            //this.y += this.yVelocity;
-            /*
-            this.yVelocity += 0.5;
-
-            if (this.y > canvas.height)
-            {
-              this.yVelocity = this.yVelocity* -0.9;
-            }
-            if(this.y < 0) {
-              this.yVelocity = this.yVelocity* -0.9;
-            }
-            */
-            
-
-          // Rotate
-          this.spin += 0.2;
-
-          
-            
-            var xCap = 25;
-            var yCap = 25;
-            // Resets velocity
-            if (this.xVelocity >= xCap)
-            {
-              this.xVelocity = 1;
-            }
-            if (this.yVelocity >= yCap)
-            {
-              this.yVelocity = 1;
-            }
-            
-            
-
-            // Bounce on Y canvas bottom
-            
-            if(this.y >= 500-this.radius)
-            {
-              this.yVelocity *= -1.1;
-              this.spin *= -1.1;
-            }
-
-            // Bounce on Y canvas top
-            if(this.y < 0+this.radius)
-            {
-              this.yVelocity *= -1.1;
-              this.spin *= -1.1;
-            }
-
-            // Bounce on X canvas right side
-            if(this.x >=500-this.radius)
-            {
-              this.xVelocity *= -1.1;
-              this.spin *= -1.1;
-            }
-
-            // Bounce on X canvas left side
-            if(this.x < 0+this.radius)
-            {
-              this.xVelocity *= -1.1;
-              this.spin *= -1.1;
-            }
-          
-        }
-
-            
+    class Ball {
+      constructor(x, y, yVelocity, xVelocity, radius, mass) {
+          this.x = x;
+          this.y = y;
+          this.yVelocity = yVelocity;
+          this.xVelocity = xVelocity;
+          this.radius = radius;
+          this.spin = 0;
+          this.mass = mass;
       }
 
+      draw(){
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+
+          // draws 4 lines to center for symbol
+          var rotation = this.spin*(Math.PI/180);
+
+          // Bottom Right lines
+          var x1 = this.x+(this.radius*Math.cos(((7*Math.PI)/4)+rotation));
+          var y1 = this.y+(this.radius*Math.sin(((7*Math.PI)/4)+rotation));
+          ctx.moveTo(x1,y1);
+
+          var x2 = this.x+(this.radius*Math.cos(((3*Math.PI)/4)+rotation));
+          var y2 = this.y+(this.radius*Math.sin(((3*Math.PI)/4)+rotation));
+          ctx.lineTo(x2, y2);
+
+          // Top right lines
+          var x3 = this.x+(this.radius*Math.cos(((5*Math.PI)/4)+rotation));
+          var y3 = this.y+(this.radius*Math.sin(((5*Math.PI)/4)+rotation));
+          ctx.moveTo(x3,y3);
+
+          var x4 = this.x+(this.radius*Math.cos(((1*Math.PI)/4)+rotation));
+          var y4 = this.y+(this.radius*Math.sin(((1*Math.PI)/4)+rotation));
+          ctx.lineTo(x4, y4);
+
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "#FF0000";
+          ctx.stroke();
+      }
+
+      move(){
+        // Move horizontally
+        
+          this.x += this.xVelocity;
+          this.y += this.yVelocity;
+          
+
+          // Vertical Acceleration
+          //this.y += this.yVelocity;
+          /*
+          this.yVelocity += 0.5;
+
+          if (this.y > canvas.height)
+          {
+            this.yVelocity = this.yVelocity* -0.9;
+          }
+          if(this.y < 0) {
+            this.yVelocity = this.yVelocity* -0.9;
+          }
+          */
+          
+
+        // Rotate
+        this.spin += 0.2;
+
+        
+          
+          var xCap = 25;
+          var yCap = 25;
+          // Resets velocity
+          if (this.xVelocity >= xCap)
+          {
+            this.xVelocity = 1;
+          }
+          if (this.yVelocity >= yCap)
+          {
+            this.yVelocity = 1;
+          }
+          
+          
+
+          // Bounce on Y canvas bottom
+          
+          if(this.y >= 500-this.radius)
+          {
+            this.yVelocity *= -1.1;
+            this.spin *= -1.1;
+          }
+
+          // Bounce on Y canvas top
+          if(this.y < 0+this.radius)
+          {
+            this.yVelocity *= -1.1;
+            this.spin *= -1.1;
+          }
+
+          // Bounce on X canvas right side
+          if(this.x >=500-this.radius)
+          {
+            this.xVelocity *= -1.1;
+            this.spin *= -1.1;
+          }
+
+          // Bounce on X canvas left side
+          if(this.x < 0+this.radius)
+          {
+            this.xVelocity *= -1.1;
+            this.spin *= -1.1;
+          }
+        
+      }
+
+            
+    }
+
       // Construct instances of the balls
-      const b1 = new Ball(20, 20, 6, 4, 15, 20);
-      //const b2 = new Ball(50, 50, 8, 3, 10, 20);
+      //const b1 = new Ball(20, 20, 6, 4, 15, 20);
 	    const p1 = new Paddle(10, 40, 25, 100);
       const p2 = new Paddle(480, 470, 25, 100);
+
       // A function to repeat every time the animation loops.
       function repeatme() {
         // Clear canvas
         ctx.clearRect(0, 0, 500, 500);
-        // Draw the balls (stroked, not filled).
-        b1.draw();
-        //b2.draw();
-		    p1.draw();
+
+        // Draw the balls and move them
+        ballsInAction();
+        p1.draw();
         p2.draw();
-        
-        // Move the balls
-        b1.move();
-        //b2.move();
 
         // Detect collisions
         collisionDetect();
@@ -312,18 +307,29 @@
     function collisionDetect(){
       var distance = 0;
 
-      distance = Math.sqrt(Math.pow(p1.x-b1.x, 2) + Math.pow(p1.y-b1.y, 2));
-
-      if(distance <= p1.radius+b1.radius)
+      for (let i = 0; i < balls.length; i++)
       {
-        console.log("Balls Collided");
+        p1Distance = Math.sqrt(Math.pow(p1.x-balls[i].x, 2) + Math.pow(p1.y-balls[i].y, 2));
+        p2Distance = Math.sqrt(Math.pow(p2.x-balls[i].x, 2) + Math.pow(p2.y-balls[i].y, 2));
 
-        //TimerMessage
-        timerVar = setTimeout(collisionMessage, 750);
-        setTimeout(clearMessage, 100);
+        if(p1Distance <= p1.radius+balls[i].radius || p2Distance <= p2.radius+balls[i].radius)
+        {
+          console.log("Balls Collided");
 
-        collisionReact(p1, b1);
+          callTimer();
+
+          //collisionReact(p1, b1);
+        }
+      
       }
+
+      
+    }
+
+    function callTimer(){
+      //TimerMessage
+      timerVar = setTimeout(collisionMessage, 750);
+      setTimeout(clearMessage, 100);
     }
 
     function collisionMessage() {
@@ -373,6 +379,23 @@
       paddle.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
       paddle.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
       
+    }
+
+    function createBall() {
+      // Build random speeds for the balls
+      const yVelocity = Math.random();
+      const xVelocity = Math.random();
+      // Create new ball object and add to array
+      const newBall = new Ball(20, 20, 6, 4, 15, 20);
+      balls.push(newBall);
+    }
+
+    function ballsInAction() {
+      for (let i = 0; i < balls.length; i++)
+      {
+        balls[i].draw();
+        balls[i].move();
+      }
     }
     
 
