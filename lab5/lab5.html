@@ -1,12 +1,14 @@
 <html>
     <!-- Import Three.js CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.157.0/three.min.js" 
-    integrity="sha512-nogdM20cZX4FjsqU5H5ecK3vw8LjYN1AcUUWi7asLUVP3eJK5wldywvqFMW8CLd5/xoiJaIL3eXG82SlOWZkTA==" 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.157.0/three.js" 
+    integrity="sha512-8DQ21zI0ic9mMNCPYj225sCbU8LGPu/T7u97ix4/P+WqAJIIuuG6w/fPoOFC6LfZGqUE85etxR4W0ia2IyRFiw==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <head>
+    <head>
     <meta charset="UTF-8">
+    <style type="text/css">
+    </style>
     <title>3D</title>
-  </head>
+    </head>
 
   <body>
     <h1>Shane</h1>
@@ -14,12 +16,31 @@
         // Implement scene, camera and renderer.
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        camera.position.z = 15;
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 
-        // create Tete
+        // create Tetehedron
+        //const geometry = new THREE.SphereGeometry( 15, 32, 16 );
+        const geometry = new THREE.TetrahedronGeometry(5,0); // (Radius, detail)
+        const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const tetrahedron = new THREE.Mesh(geometry, material);
+        scene.add(tetrahedron);
+
+        function repeatMe() {
+            //Setup renderer
+            renderer.render(scene, camera);
+
+            //Rotate
+            tetrahedron.rotation.x += 0.01;
+            tetrahedron.rotation.y += 0.01;
+
+            requestAnimationFrame(repeatMe);
+        }
+        repeatMe();
+
     </script>
   </body>
 </html>
