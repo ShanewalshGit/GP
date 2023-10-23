@@ -104,28 +104,15 @@
         
           this.x += this.xVelocity;
           this.y += this.yVelocity;
+          this.yVelocity += 0.5; // accelerate vertically
+
+          let gravity = 0.90;
           
-
-          // Vertical Acceleration
-          //this.y += this.yVelocity;
-          /*
-          this.yVelocity += 0.5;
-
-          if (this.y > canvas.height)
-          {
-            this.yVelocity = this.yVelocity* -0.9;
-          }
-          if(this.y < 0) {
-            this.yVelocity = this.yVelocity* -0.9;
-          }
-          */
-          
-
-        // Rotate
-        this.spin += 0.2;
-
+          // Rotate
+          this.spin += 0.25;
         
           
+          /*
           var xCap = 25;
           var yCap = 25;
           // Resets velocity
@@ -137,35 +124,35 @@
           {
             this.yVelocity = 1;
           }
-          
+          */
           
 
           // Bounce on Y canvas bottom
           
           if(this.y >= 500-this.radius)
           {
-            this.yVelocity *= -1.1;
+            this.yVelocity *= -gravity;
             this.spin *= -1.1;
           }
 
           // Bounce on Y canvas top
           if(this.y < 0+this.radius)
           {
-            this.yVelocity *= -1.1;
+            this.yVelocity *= -gravity;
             this.spin *= -1.1;
           }
 
           // Bounce on X canvas right side
           if(this.x >=500-this.radius)
           {
-            this.xVelocity *= -1.1;
+            this.xVelocity *= -gravity;
             this.spin *= -1.1;
           }
 
           // Bounce on X canvas left side
           if(this.x < 0+this.radius)
           {
-            this.xVelocity *= -1.1;
+            this.xVelocity *= -gravity;
             this.spin *= -1.1;
           }
         
@@ -326,6 +313,7 @@
 
         if(p1Distance <= p1.radius+balls[i].radius || p2Distance <= p2.radius+balls[i].radius)
         {
+          collisionReact(p1,p2,balls[i]);
           console.log("Balls Collided");
           messageActive = true;
         }
@@ -342,11 +330,24 @@
       ctx.fillText("Collision Detected", canvas.width/2, canvas.height/6);
     }
     
-    function collisionReact(paddle, ball) {
+    function collisionReact(paddle1, paddle2, ball) {
       console.log("Entered CollisionReact");
-      
 
-      
+      for (let ball of balls) {
+        let distance = Math.sqrt((ball.x - paddle1.x) * (ball.x - paddle1.x) + (ball.y - paddle1.y) * (ball.y - paddle1.y));
+        if (distance < ball.radius + paddle1.radius) {
+            ball.xVelocity *= -1.1;
+            ball.yVelocity *= -1.1;
+        }
+        //if ball is within paddle 2's x range
+        let distance2 = Math.sqrt((ball.x - paddle2.x) * (ball.x - paddle2.x) + (ball.y - paddle2.y) * (ball.y - paddle2.y));
+        if (distance2 < ball.radius + paddle2.radius) {
+            ball.xVelocity *= -1.1;
+            ball.yVelocity *= -1.1;
+        }
+      }
+
+      /*
       // Once collision is detected, handle the collision
       dx = paddle.x - ball.x; // Calculate horizontal distance between objects
       dy = paddle.y - ball.y; // Calculate vertical distance between objects
@@ -374,13 +375,13 @@
       finalYVel1 = newYVel1;
       finalYVel2 = newYVel2;
       
-      
       // Determine x and y speeds on the original axis system using trig.
       ball.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
       ball.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
       paddle.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
       paddle.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
-      
+
+      */
     }
 
     function createBall() {
