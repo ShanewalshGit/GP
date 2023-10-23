@@ -19,7 +19,6 @@
 
   <body>
     <h1>Shane Walsh</h1>
-    <h3 id="timerMessage" style="text-align: center;"></h3>
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
     <button onclick="createBall()">Add Ball</button>
     
@@ -180,6 +179,9 @@
 	    const p1 = new Paddle(10, 40, 25, 100);
       const p2 = new Paddle(480, 470, 25, 100);
 
+      let messageActive = false;
+      let timeCounter = 0;
+
       // A function to repeat every time the animation loops.
       function repeatme() {
         // Clear canvas
@@ -192,6 +194,16 @@
 
         // Detect collisions
         collisionDetect();
+        if(messageActive == true && timeCounter <= 750)
+        {
+          collisionMessage();
+          timeCounter++;
+        }
+        else
+        {
+          messageActive = false;
+          timeCounter = 0;
+        }
 
         window.requestAnimationFrame(repeatme);
       }
@@ -315,10 +327,7 @@
         if(p1Distance <= p1.radius+balls[i].radius || p2Distance <= p2.radius+balls[i].radius)
         {
           console.log("Balls Collided");
-
-          callTimer();
-
-          //collisionReact(p1, b1);
+          messageActive = true;
         }
       
       }
@@ -326,18 +335,11 @@
       
     }
 
-    function callTimer(){
-      //TimerMessage
-      timerVar = setTimeout(collisionMessage, 750);
-      setTimeout(clearMessage, 100);
-    }
-
     function collisionMessage() {
-      document.getElementById("timerMessage").innerHTML = "Collision Detected";
-    }
-
-    function clearMessage() {
-      document.getElementById("timerMessage").innerHTML = "";
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "blue";
+      ctx.textAlign = "center";
+      ctx.fillText("Collision Detected", canvas.width/2, canvas.height/6);
     }
     
     function collisionReact(paddle, ball) {
