@@ -25,9 +25,26 @@
         // create Tetehedron
         //const geometry = new THREE.SphereGeometry( 15, 32, 16 );
         const geometry = new THREE.TetrahedronGeometry(5,0); // (Radius, detail)
-        const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const material = new THREE.MeshBasicMaterial({ color: 0xffff00, wireframe: true });
+        //const material = new THREE.MeshLambertMaterial({ color: 0xffff00, wireframe: true });
         const tetrahedron = new THREE.Mesh(geometry, material);
         scene.add(tetrahedron);
+
+        /*
+        const spotLight = new THREE.SpotLight( 0xffffff );
+        spotLight.position.set( 100, 1000, 100 );
+        spotLight.map = new THREE.TextureLoader().load( url );
+
+        spotLight.castShadow = true;
+
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+
+        spotLight.shadow.camera.near = 500;
+        spotLight.shadow.camera.far = 4000;
+        spotLight.shadow.camera.fov = 30;
+        scene.add( spotLight );
+        */
 
         function repeatMe() {
             //Setup renderer
@@ -36,6 +53,8 @@
             //Rotate
             tetrahedron.rotation.x += 0.01;
             tetrahedron.rotation.y += 0.01;
+
+            tetrahedron.position.x += 0.01;
 
             requestAnimationFrame(repeatMe);
         }
