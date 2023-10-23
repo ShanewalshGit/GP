@@ -6,7 +6,6 @@
   <head>
     <meta charset="UTF-8">
     <title>Canvas</title>
-
     <style type="text/css">
       body {
           background-color: white;
@@ -20,6 +19,8 @@
   <body>
     <h1>Shane Walsh</h1>
     <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+    
+    <!-- Button creates more ball objects and adds to array -->
     <button onclick="createBall()">Add Ball</button>
     
     <script type="text/javascript">
@@ -32,44 +33,42 @@
         y: canvas.offsetTop
       }
       var noClicks = 0;
+      
 
+      class Paddle {
+        constructor(x, y, radius, mass) {
+          this.x = x;
+          this.y = y;
+          this.radius = radius;
+          this.mass = mass;
+        }
 
-	  class Paddle {
-      constructor(x, y, radius, mass) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.mass = mass;
+        draw(){
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+          ctx.strokeStyle = "#0000FF";
+          ctx.stroke();
+        }
+
+        move(){
+          
+        }
       }
 
-      draw(){
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = "#0000FF";
-        ctx.stroke();
+    
 
-      }
-
-      move(){
-        
-      }
-
-	  }
-
-    var balls = [];
-
-    class Ball {
-      constructor(x, y, yVelocity, xVelocity, radius, mass) {
+      class Ball {
+        constructor(x, y, yVelocity, xVelocity, radius, mass) {
           this.x = x;
           this.y = y;
           this.yVelocity = yVelocity;
           this.xVelocity = xVelocity;
           this.radius = radius;
           this.spin = 0;
-          this.mass = mass;
-      }
+          //this.mass = mass;
+        }
 
-      draw(){
+        draw(){
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 
@@ -97,38 +96,23 @@
           ctx.lineWidth = 2;
           ctx.strokeStyle = "#FF0000";
           ctx.stroke();
-      }
+        }
 
-      move(){
-        // Move horizontally
-        
+        move(){
+          // Move horizontally and vertically
+          
           this.x += this.xVelocity;
           this.y += this.yVelocity;
-          this.yVelocity += 0.5; // accelerate vertically
+
+          // Accelerate vertically
+          this.yVelocity += 0.5;
 
           let gravity = 0.90;
           
-          // Rotate
-          this.spin += 0.25;
-        
+          // Rotation
+          this.spin += 0.25;          
           
-          /*
-          var xCap = 25;
-          var yCap = 25;
-          // Resets velocity
-          if (this.xVelocity >= xCap)
-          {
-            this.xVelocity = 1;
-          }
-          if (this.yVelocity >= yCap)
-          {
-            this.yVelocity = 1;
-          }
-          */
-          
-
           // Bounce on Y canvas bottom
-          
           if(this.y >= 500-this.radius)
           {
             this.yVelocity *= -gravity;
@@ -154,18 +138,19 @@
           {
             this.xVelocity *= -gravity;
             this.spin *= -1.1;
-          }
-        
+          } 
+        }      
       }
 
-            
-    }
+      // Instantiate array that will be filled with ball objects when button pressed
+      var balls = [];
 
       // Construct instances of the balls
       //const b1 = new Ball(20, 20, 6, 4, 15, 20);
 	    const p1 = new Paddle(10, 40, 25, 100);
       const p2 = new Paddle(480, 470, 25, 100);
 
+      // Timed Message Managemant
       let messageActive = false;
       let timeCounter = 0;
 
@@ -181,7 +166,8 @@
 
         // Detect collisions
         collisionDetect();
-        if(messageActive == true && timeCounter <= 750)
+        // CollisionDetect tells whether a collision occured using bool, if within timeframe, message will continue to display 
+        if(messageActive == true && timeCounter <= 75)
         {
           collisionMessage();
           timeCounter++;
@@ -198,210 +184,211 @@
       // Get the animation going.
       repeatme();
 
-	  // Add a Javascript event listener to the keypress event.
-		window.addEventListener("keypress", function(event) { 
-			// Just log the event to the console.
-			console.log(event);
-		});
 
-		//keypresses with jQuery
-		$(document.body).on('keydown', function(e) {
-			console.log(e.which);
-			switch (e.which) {
-			// key code for left arrow
-			case 37:
-				console.log('left arrow key pressed!');
-				break;
+      // Collision function
+      function collisionDetect(){
+        var distance = 0;
 
-			// key code for top arrow
-			case 38:
-				console.log('top arrow key pressed!');
-				p1.y = p1.y - 10;
-				break;
-
-			// key code for right arrow
-			case 39:
-				console.log('right arrow key pressed!');
-				break;
-			
-			// key code for bottom arrow
-			case 40:
-				console.log('bottem arrow key pressed');
-				p1.y = p1.y + 10;
-        break;
-
-      // second paddle up
-      case 87: 
-        p2.y = p2.y - 10;
-        break;
-
-      // second paddle down
-      case 83: 
-        p2.y = p2.y + 10;
-        break;
-
-      // Increase spin speed - x
-      case 67:
-        console.log("b1 spin is currently " + b1.spin);
-        console.log("b2 spin is currently " + b2.spin);
-        b1.spin = b1.spin +1;
-        b2.spin = b2.spin +1;
-        console.log("b1 Spin increased to "+ b1.spin);
-        console.log("b2 Spin increased to " + b2.spin);
-        break;
-      
-      // decrease spin speed - c
-      case 88:
-        console.log("b1 spin is currently " + b1.spin);
-        console.log("b2 spin is currently " + b2.spin);
-        b1.spin = b1.spin -1;
-        b2.spin = b2.spin -1;
-        console.log("b1 Spin decreased to " + b1.spin);
-        console.log("b2 Spin decreased to " + b2.spin);
-        break;
-
-        // Increase speed - n
-      case 78:
-        console.log("b1 speed is currently " + b1.xVelocity);
-        console.log("b2 speed is currently " + b2.xVelocity);
-        b1.xVelocity = b1.xVelocity +1;
-        b1.yVelocity = b1.yVelocity +1;
-        b2.xVelocity = b2.xVelocity +1;
-        b2.yVelocity = b2.yVelocity +1;
-        console.log("b1 Speed increased to " + b1.xVelocity);
-        console.log("b2 Speed increased to " + b2.xVelocity);
-        break;
-      
-        // decrease speed - m
-      case 77:
-        console.log("b1 speed is currently " + b1.xVelocity);
-        console.log("b2 speed is currently " + b2.xVelocity);
-        b1.xVelocity = b1.xVelocity -1;
-        b1.yVelocity = b1.yVelocity -1;
-        b2.xVelocity = b2.xVelocity -1;
-        b2.yVelocity = b2.yVelocity -1;
-        console.log("b1 Speed decreased to " + b1.xVelocity);
-        console.log("b2 Speed decreased to " + b2.xVelocity);
-        break;
-
-			}
-
-		});
-
-    // Mouse for paddle
-    canvas.addEventListener("mousemove", function(event) { 
-        console.log("Global: "+ event.clientX, event.clientY);
-        console.log("Local: " + canvasPosition.x, canvasPosition.y);
-
-        var mouse = { 
-          x: event.clientX - canvasPosition.x,
-          y: event.clientY - canvasPosition.y
-        };
-
-        p1.y = mouse.y;
-        p2.y = mouse.y;
-    });
-
-    // Collision function
-    function collisionDetect(){
-      var distance = 0;
-
-      for (let i = 0; i < balls.length; i++)
-      {
-        p1Distance = Math.sqrt(Math.pow(p1.x-balls[i].x, 2) + Math.pow(p1.y-balls[i].y, 2));
-        p2Distance = Math.sqrt(Math.pow(p2.x-balls[i].x, 2) + Math.pow(p2.y-balls[i].y, 2));
-
-        if(p1Distance <= p1.radius+balls[i].radius || p2Distance <= p2.radius+balls[i].radius)
+        for (let i = 0; i < balls.length; i++)
         {
-          collisionReact(p1,p2,balls[i]);
-          console.log("Balls Collided");
-          messageActive = true;
+          p1Distance = Math.sqrt(Math.pow(p1.x-balls[i].x, 2) + Math.pow(p1.y-balls[i].y, 2));
+          p2Distance = Math.sqrt(Math.pow(p2.x-balls[i].x, 2) + Math.pow(p2.y-balls[i].y, 2));
+
+          if(p1Distance <= p1.radius+balls[i].radius || p2Distance <= p2.radius+balls[i].radius)
+          {
+            collisionReact(p1,p2,balls[i]);
+            console.log("Balls Collided");
+            messageActive = true;
+          }
         }
-      
       }
 
+      function collisionMessage() {
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "blue";
+        ctx.textAlign = "center";
+        ctx.fillText("Collision Detected", canvas.width/2, canvas.height/6);
+      }
       
-    }
+      function collisionReact(paddle1, paddle2, ball) {
+        console.log("Entered CollisionReact");
 
-    function collisionMessage() {
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "blue";
-      ctx.textAlign = "center";
-      ctx.fillText("Collision Detected", canvas.width/2, canvas.height/6);
-    }
-    
-    function collisionReact(paddle1, paddle2, ball) {
-      console.log("Entered CollisionReact");
-
-      for (let ball of balls) {
+        // if ball is within paddle 1's range, bounce back
         let distance = Math.sqrt((ball.x - paddle1.x) * (ball.x - paddle1.x) + (ball.y - paddle1.y) * (ball.y - paddle1.y));
         if (distance < ball.radius + paddle1.radius) {
             ball.xVelocity *= -1.1;
             ball.yVelocity *= -1.1;
         }
-        //if ball is within paddle 2's x range
+        //if ball is within paddle 2's range, bounce back
         let distance2 = Math.sqrt((ball.x - paddle2.x) * (ball.x - paddle2.x) + (ball.y - paddle2.y) * (ball.y - paddle2.y));
         if (distance2 < ball.radius + paddle2.radius) {
             ball.xVelocity *= -1.1;
             ball.yVelocity *= -1.1;
         }
+
+        // Collision Maths from slides - never perfected
+        /*
+        // Once collision is detected, handle the collision
+        dx = paddle.x - ball.x; // Calculate horizontal distance between objects
+        dy = paddle.y - ball.y; // Calculate vertical distance between objects
+        collisionAngle = Math.atan2(dy, dx); // Calculate collision angle using trig
+        
+        
+        // Calculate each object's speed as magnitude
+        magnitude1 = Math.sqrt(ball.xVelocity*ball.xVelocity+ball.yVelocity*ball.yVelocity);
+        magnitude2 = Math.sqrt(paddle.xVelocity*paddle.xVelocity+paddle.yVelocity*paddle.yVelocity);
+        
+        // Determine objects' direction using trig
+        direction1 = Math.atan2(ball.yVelocity, ball.xVelocity);
+        direction2 = Math.atan2(paddle.yVelocity, paddle.xVelocity);
+
+        // Calculate new xVel using trig applied to the difference between the direction angle and the collision angle
+        newXVel1 = magnitude1 * Math.cos(direction1-collisionAngle);
+        newYVel1 = magnitude1 * Math.sin(direction1-collisionAngle);
+        newXVel2 = magnitude2 * Math.cos(direction2-collisionAngle);
+        newYVel2 = magnitude2 * Math.sin(direction2-collisionAngle);
+        
+        // Determine final x speed for objects
+        finalXVel1 = ((ball.mass-paddle.mass)*newXVel1+(paddle.mass+paddle.mass)*newXVel2)/(ball.mass+paddle.mass);
+        finalXVel2 = ((ball.mass-ball.mass)*newXVel1+(paddle.mass+ball.mass)*newXVel2)/(ball.mass+paddle.mass);
+        // y speed does not change (it's a 1D collision)
+        finalYVel1 = newYVel1;
+        finalYVel2 = newYVel2;
+        
+        // Determine x and y speeds on the original axis system using trig.
+        ball.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
+        ball.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
+        paddle.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
+        paddle.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
+
+        */
       }
 
-      /*
-      // Once collision is detected, handle the collision
-      dx = paddle.x - ball.x; // Calculate horizontal distance between objects
-      dy = paddle.y - ball.y; // Calculate vertical distance between objects
-      collisionAngle = Math.atan2(dy, dx); // Calculate collision angle using trig
-      
-      
-      // Calculate each object's speed as magnitude
-      magnitude1 = Math.sqrt(ball.xVelocity*ball.xVelocity+ball.yVelocity*ball.yVelocity);
-      magnitude2 = Math.sqrt(paddle.xVelocity*paddle.xVelocity+paddle.yVelocity*paddle.yVelocity);
-      
-      // Determine objects' direction using trig
-      direction1 = Math.atan2(ball.yVelocity, ball.xVelocity);
-      direction2 = Math.atan2(paddle.yVelocity, paddle.xVelocity);
-
-      // Calculate new xVel using trig applied to the difference between the direction angle and the collision angle
-      newXVel1 = magnitude1 * Math.cos(direction1-collisionAngle);
-      newYVel1 = magnitude1 * Math.sin(direction1-collisionAngle);
-      newXVel2 = magnitude2 * Math.cos(direction2-collisionAngle);
-      newYVel2 = magnitude2 * Math.sin(direction2-collisionAngle);
-      
-      // Determine final x speed for objects
-      finalXVel1 = ((ball.mass-paddle.mass)*newXVel1+(paddle.mass+paddle.mass)*newXVel2)/(ball.mass+paddle.mass);
-      finalXVel2 = ((ball.mass-ball.mass)*newXVel1+(paddle.mass+ball.mass)*newXVel2)/(ball.mass+paddle.mass);
-      // y speed does not change (it's a 1D collision)
-      finalYVel1 = newYVel1;
-      finalYVel2 = newYVel2;
-      
-      // Determine x and y speeds on the original axis system using trig.
-      ball.xVelocity = Math.cos(collisionAngle)*finalXVel1+Math.cos(collisionAngle+Math.PI/2)*finalYVel1;
-      ball.yVelocity = Math.sin(collisionAngle)*finalXVel1+Math.sin(collisionAngle+Math.PI/2)*finalYVel1;
-      paddle.xVelocity = Math.cos(collisionAngle)*finalXVel2+Math.cos(collisionAngle+Math.PI/2)*finalYVel2;
-      paddle.yVelocity = Math.sin(collisionAngle)*finalXVel2+Math.sin(collisionAngle+Math.PI/2)*finalYVel2;
-
-      */
-    }
-
-    function createBall() {
-      // Build random speeds for the balls
-      const yVelocity = Math.random();
-      const xVelocity = Math.random();
-      // Create new ball object and add to array
-      const newBall = new Ball(20, 20, 6, 4, 15, 20);
-      balls.push(newBall);
-    }
-
-    function ballsInAction() {
-      for (let i = 0; i < balls.length; i++)
-      {
-        balls[i].draw();
-        balls[i].move();
+      function createBall() {
+        // Build random speeds for the balls
+        const yVelocity = Math.random();
+        const xVelocity = Math.random();
+        // Create new ball object and add to array
+        const newBall = new Ball(20, 20, 6, 4, 15, 20);
+        balls.push(newBall);
       }
-    }
-    
 
+      function ballsInAction() {
+        for (let i = 0; i < balls.length; i++)
+        {
+          balls[i].draw();
+          balls[i].move();
+        }
+      }
+
+
+
+
+      // Mouse for paddle
+      canvas.addEventListener("mousemove", function(event) { 
+            console.log("Global: "+ event.clientX, event.clientY);
+            console.log("Local: " + canvasPosition.x, canvasPosition.y);
+
+            var mouse = { 
+              x: event.clientX - canvasPosition.x,
+              y: event.clientY - canvasPosition.y
+            };
+
+            p1.y = mouse.y;
+            p2.y = mouse.y;
+          });
+
+      // Add a Javascript event listener to the keypress event.
+      window.addEventListener("keypress", function(event) { 
+        // Just log the event to the console.
+        console.log(event);
+      });
+
+      //keypresses with jQuery
+      $(document.body).on('keydown', function(e) {
+        console.log(e.which);
+        
+        switch (e.which) {
+
+        // key code for left arrow
+        case 37:
+          console.log('left arrow key pressed!');
+          break;
+
+        // key code for top arrow
+        case 38:
+          console.log('top arrow key pressed!');
+          p1.y = p1.y - 10;
+          break;
+
+        // key code for right arrow
+        case 39:
+          console.log('right arrow key pressed!');
+          break;
+        
+        // key code for bottom arrow
+        case 40:
+          console.log('bottem arrow key pressed');
+          p1.y = p1.y + 10;
+          break;
+
+        // second paddle up
+        case 87: 
+          p2.y = p2.y - 10;
+          break;
+
+        // second paddle down
+        case 83: 
+          p2.y = p2.y + 10;
+          break;
+
+        // Increase spin speed - x
+        case 67:
+          console.log("b1 spin is currently " + b1.spin);
+          console.log("b2 spin is currently " + b2.spin);
+          b1.spin = b1.spin +1;
+          b2.spin = b2.spin +1;
+          console.log("b1 Spin increased to "+ b1.spin);
+          console.log("b2 Spin increased to " + b2.spin);
+          break;
+        
+        // decrease spin speed - c
+        case 88:
+          console.log("b1 spin is currently " + b1.spin);
+          console.log("b2 spin is currently " + b2.spin);
+          b1.spin = b1.spin -1;
+          b2.spin = b2.spin -1;
+          console.log("b1 Spin decreased to " + b1.spin);
+          console.log("b2 Spin decreased to " + b2.spin);
+          break;
+
+        // Increase speed - n
+        case 78:
+          console.log("b1 speed is currently " + b1.xVelocity);
+          console.log("b2 speed is currently " + b2.xVelocity);
+          b1.xVelocity = b1.xVelocity +1;
+          b1.yVelocity = b1.yVelocity +1;
+          b2.xVelocity = b2.xVelocity +1;
+          b2.yVelocity = b2.yVelocity +1;
+          console.log("b1 Speed increased to " + b1.xVelocity);
+          console.log("b2 Speed increased to " + b2.xVelocity);
+          break;
+        
+        // decrease speed - m
+        case 77:
+          console.log("b1 speed is currently " + b1.xVelocity);
+          console.log("b2 speed is currently " + b2.xVelocity);
+          b1.xVelocity = b1.xVelocity -1;
+          b1.yVelocity = b1.yVelocity -1;
+          b2.xVelocity = b2.xVelocity -1;
+          b2.yVelocity = b2.yVelocity -1;
+          console.log("b1 Speed decreased to " + b1.xVelocity);
+          console.log("b2 Speed decreased to " + b2.xVelocity);
+          break;
+
+        }
+
+      });
     </script>
 
   </body>
