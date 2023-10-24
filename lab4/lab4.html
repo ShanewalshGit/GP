@@ -344,46 +344,44 @@
 
         // Increase spin speed - x
         case 67:
-          console.log("b1 spin is currently " + b1.spin);
-          console.log("b2 spin is currently " + b2.spin);
-          b1.spin = b1.spin +1;
-          b2.spin = b2.spin +1;
-          console.log("b1 Spin increased to "+ b1.spin);
-          console.log("b2 Spin increased to " + b2.spin);
+          for (let i = 0; i < balls.length; i++)
+          {
+            console.log("b1 spin is currently " + balls[i].spin);
+            balls[i].spin = balls[i].spin +1;
+            console.log("ball Spin increased to "+ balls[i].spin);
+          }
           break;
         
         // decrease spin speed - c
         case 88:
-          console.log("b1 spin is currently " + b1.spin);
-          console.log("b2 spin is currently " + b2.spin);
-          b1.spin = b1.spin -1;
-          b2.spin = b2.spin -1;
-          console.log("b1 Spin decreased to " + b1.spin);
-          console.log("b2 Spin decreased to " + b2.spin);
+          for (let i = 0; i < balls.length; i++)
+          {
+            console.log("balls spin is currently " + balls[i].spin);
+            balls[i].spin = balls[i].spin -1;
+            console.log("ball Spin decreased to " + balls[i].spin);
+          }
           break;
 
         // Increase speed - n
         case 78:
-          console.log("b1 speed is currently " + b1.xVelocity);
-          console.log("b2 speed is currently " + b2.xVelocity);
-          b1.xVelocity = b1.xVelocity +1;
-          b1.yVelocity = b1.yVelocity +1;
-          b2.xVelocity = b2.xVelocity +1;
-          b2.yVelocity = b2.yVelocity +1;
-          console.log("b1 Speed increased to " + b1.xVelocity);
-          console.log("b2 Speed increased to " + b2.xVelocity);
+          for (let i = 0; i < balls.length; i++)
+          {
+            console.log("ball speed is currently " + balls[i].xVelocity);
+            balls[i].xVelocity = balls[i].xVelocity +1;
+            balls[i].yVelocity = balls[i].yVelocity +1;
+            console.log("ball Speed increased to " + balls[i].xVelocity);
+          }
           break;
         
         // decrease speed - m
         case 77:
-          console.log("b1 speed is currently " + b1.xVelocity);
-          console.log("b2 speed is currently " + b2.xVelocity);
-          b1.xVelocity = b1.xVelocity -1;
-          b1.yVelocity = b1.yVelocity -1;
-          b2.xVelocity = b2.xVelocity -1;
-          b2.yVelocity = b2.yVelocity -1;
-          console.log("b1 Speed decreased to " + b1.xVelocity);
-          console.log("b2 Speed decreased to " + b2.xVelocity);
+          for (let i = 0; i < balls.length; i++)
+          {
+            console.log("ball speed is currently " + balls[i].xVelocity);
+            balls[i].xVelocity = balls[i].xVelocity -1;
+            balls[i].yVelocity = balls[i].yVelocity -1;
+            console.log("ball Speed decreased to " + ball[i].xVelocity);
+          }
           break;
 
         }
