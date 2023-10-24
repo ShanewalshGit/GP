@@ -22,9 +22,13 @@
           const material = new THREE.MeshLambertMaterial({ color: 0xffffff});
           this.tetrahedron = new THREE.Mesh(geometry, material);
           this.tetrahedron.castShadow = true;
+
+          const wireframeMaterial = new THREE.MeshLambertMaterial({color: 0xfff00});
+          const wireframe = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), wireframeMaterial);
+        
+          this.tetrahedron.add(wireframe);
           scene.add(this.tetrahedron);
 
-          const wireframematerial = 
         }
 
 
