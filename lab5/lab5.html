@@ -32,18 +32,18 @@
           // Initial position & velocity
           this.tetrahedron.position.x = 0;
           this.tetrahedron.position.y = 0;
-          this.xVelocity = 0.05;
-          this.yVelocity = 0.05;
+          this.xVelocity = 0.08;
+          this.yVelocity = 0.08;
         }
 
 
         move(){
           //Move
           this.tetrahedron.position.x += this.xVelocity
-          this.tetrahedron.position.y -= this.yVelocity;
+          this.tetrahedron.position.y += this.yVelocity;
 
           //Accelerate vertically
-          this.yVelocity += 0.005;
+          this.yVelocity -= 0.005;
 
           //console.log("X: " + this.tetrahedron.position.x);
           console.log("Y: " + this.tetrahedron.position.y);
