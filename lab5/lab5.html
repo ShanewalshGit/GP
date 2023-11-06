@@ -67,23 +67,11 @@
         }
 
         colorChange(){
-          colorProg += 1/changeDur;
+          const hueSpeed = 0.0001; // Adjust the speed of color change
 
-          if(colorProg > 1) {
-            colorProg = 1;
-          }
+          // Update the hue value based on time
+          this.tetrahedron.material.color.setHSL((Date.now() * hueSpeed) % 1, 1, 0.5);
 
-          tetrahedron.tetrahedron.material.color.lerpColors(startColor, endColor, colorProg);
-
-          //console.log(colorProg);
-          if(colorProg >= 1) {
-            let temp = startColor;
-            startColor = endColor;
-            endColor = temp;
-            colorProg = 0;
-          }
-
-          tetrahedron.tetrahedron.material.needsUpdate = true;
         }
 
       }
@@ -92,6 +80,7 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
         camera.position.z = 15;
+        let cameraRotation = 0;
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -113,7 +102,7 @@
 
         // Create spotlight
         var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(0, 10, 10);
+        spotLight.position.set(0, 15, 15);
         spotLight.castShadow = true;
         spotLight.intensity = 1000;
         scene.add(spotLight);
@@ -123,12 +112,6 @@
         const spotLightHelper = new THREE.SpotLightHelper( spotLight );
         scene.add( spotLightHelper );
         */
-
-        // Color Change Variables
-        let colorProg = 0;
-        let changeDur = 200;
-        let startColor = new THREE.Color(0xfff00);
-        let endColor = new THREE.Color(0xff00ff);
 
         // Plane creation
         const geometry = new THREE.PlaneGeometry( 30, 30 );
@@ -140,6 +123,16 @@
         scene.add( plane );
 
         function repeatMe() {
+          // Update the camera's position to create a circular motion
+          const radius = 20; // Adjust the radius of the circular motion
+          camera.position.x = radius * Math.cos(cameraRotation);
+          camera.position.z = radius * Math.sin(cameraRotation);
+
+          // Look at the scene's origin
+          camera.lookAt(0, 0, 0);
+
+          cameraRotation += 0.002; // Adjust the speed of rotation
+
             //Setup renderer
             renderer.render(scene, camera);
 
