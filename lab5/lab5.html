@@ -17,16 +17,22 @@
       // Tetrahedron class
       class Tetrahedron {
         constructor() {
-          const geometry = new THREE.TetrahedronGeometry(3,0); // (Radius, detail)
+          var geometry = new THREE.TetrahedronGeometry(3,0); // (Radius, detail)
           //const material = new THREE.MeshBasicMaterial({ color: 0xffff00, wireframe: true });
-          const material = new THREE.MeshLambertMaterial({ color: 0xffffff});
+          var material = new THREE.MeshLambertMaterial({ color: 0xffffff});
           this.tetrahedron = new THREE.Mesh(geometry, material);
           this.tetrahedron.castShadow = true;
 
+          /*
           const wireframeMaterial = new THREE.MeshLambertMaterial({color: 0xfff00});
           const wireframe = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), wireframeMaterial);
-        
-          this.tetrahedron.add(wireframe);
+          */
+
+          // Wireframe
+          var geometry = new THREE.TetrahedronGeometry(3.2,0);
+          var material = new THREE.MeshLambertMaterial({color: 0xeb9834, wireframe: true});
+          this.tetrahedron.add(new THREE.Mesh(geometry, material));
+
           scene.add(this.tetrahedron);
 
           // Initial position & velocity
@@ -34,13 +40,15 @@
           this.tetrahedron.position.y = 0;
           this.xVelocity = 0.08;
           this.yVelocity = 0.08;
+          this.zVelocity = 0.08;
         }
 
 
         move(){
           //Move
-          this.tetrahedron.position.x += this.xVelocity
+          this.tetrahedron.position.x += this.xVelocity;
           this.tetrahedron.position.y += this.yVelocity;
+          this.tetrahedron.position.z += this.zVelocity;
 
           //Accelerate vertically
           this.yVelocity -= 0.005;
@@ -52,18 +60,23 @@
 
           //bounce back
           // Bounce off cubes left and right
-          if (this.tetrahedron.position.x > 4.5 || this.tetrahedron.position.x < -4.5) {
+          if (this.tetrahedron.position.x > 7.5-1.1 || this.tetrahedron.position.x < -7.5+1.1) {
             this.xVelocity *= -gravity;
           }
 
           // Bounce off cubes top and bottom
-          if(this.tetrahedron.position.y > 4.5 || this.tetrahedron.position.y < -2) {
+          if(this.tetrahedron.position.y > 7.5-1.1 || this.tetrahedron.position.y < -7.5+1.1) {
             this.yVelocity *= -gravity;
+          }
+
+          if(this.tetrahedron.position.z > 7.5-1.1 || this.tetrahedron.position.z < -7.5+1.1) {
+            this.zVelocity *= -gravity;
           }
 
           //Rotate
           this.tetrahedron.rotation.x += 0.01;
           this.tetrahedron.rotation.y += 0.01;
+          this.tetrahedron.rotation.z += 0.01;
         }
 
         colorChange(){
@@ -81,6 +94,7 @@
         const camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
         camera.position.z = 15;
         let cameraRotation = 0;
+        scene.background = new THREE.Color("grey");
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -89,8 +103,8 @@
         const tetrahedron = new Tetrahedron();
 
         //cube creation
-        const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
-        const cubeMaterial = new THREE.MeshLambertMaterial({ color: 000000, transparent: true, opacity: 0.6 });
+        const cubeGeometry = new THREE.BoxGeometry(15, 15, 15);
+        const cubeMaterial = new THREE.MeshLambertMaterial({ color: 000000, transparent: true, opacity: 0.6, wireframe: false });
         const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
         scene.add(cube);
 
@@ -107,18 +121,12 @@
         spotLight.intensity = 1000;
         scene.add(spotLight);
 
-        /*
-        // spotlight Helper - Debug tool
-        const spotLightHelper = new THREE.SpotLightHelper( spotLight );
-        scene.add( spotLightHelper );
-        */
-
         // Plane creation
         const geometry = new THREE.PlaneGeometry( 30, 30 );
         const material = new THREE.MeshLambertMaterial( {color: 0x888888} );
         const plane = new THREE.Mesh( geometry, material );
         plane.rotation.x = -Math.PI/2;
-        plane.position.y = -5;
+        plane.position.y = -12;
         plane.receiveShadow = true;
         scene.add( plane );
 
