@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ <title>D3.js Demo</title>
+ <h1>Shane Walsh</h1>
+ <meta charset="UTF-8">
+ <style type="text/css"></style>
+ </head>
+ <body>
+    <svg width="300" height="180">
+        <g transform="translate(5,15)">
+            <text x="0" y="0">Howdy!</text>
+        </g>
+
+        <g transform="translate(5,55)">
+        <!-- M: Move to (jump)
+            L: Line to 
+            Q: curve to (quadratic) -->
+            <path d="MO,50 L50, 0"
+        </g>
+    </svg>
+ <script type="text/javascript">
+    // Retrieve the JSON data
+    $.getJSON("https://pkgstore.datahub.io/core/co2-ppm/co2-mm-mlo_json/data/aed7eb0d19cbcd90790525d40728b0a8/co2-mm-mlo_json.json", function (data) {
+        console.log(data);
+        plotCO2Data(data);
+    });
+
+    function plotCO2Data(data) {
+        var margin = {top: 50, right: 50, bottom: 50, left: 50 },
+        width = 980 - margin.left - margin.right,
+        height = 670 - margin.top - margin.bottom;
+
+        // parse the date / time
+        var parseDate = d3.timeParse("%y-%m-%d");
+
+        var x = d3.scaleTime()
+        .domain(d3.extent(data, function (d) { return parseDate(d["Date"]); }))
+        .range([0,width]);
+
+        var y = d3.scaleTime()
+        .domain(d3.extent(data, function (d) { return parseDate(d["Date"]); }))
+        .range([height,0]);
+
+        //Axes
+        //x is the d3.scaleTime()
+        var xAxis = d3.axisBottom(x)
+        .ticks(3); // specify the number of ticks
+
+        var yAxis = d3.axisLeft(y)
+        .ticks(3); // specify the number of ticks
+        
+    }
+
+
+
+ </script>
+ </body>
+</html>
