@@ -32,7 +32,6 @@
           var geometry = new THREE.TetrahedronGeometry(3.2,0);
           var material = new THREE.MeshLambertMaterial({color: 0xeb9834, wireframe: true});
           this.tetrahedron.add(new THREE.Mesh(geometry, material));
-
           scene.add(this.tetrahedron);
 
           // Initial position & velocity
@@ -42,7 +41,6 @@
           this.yVelocity = 0.08;
           this.zVelocity = 0.08;
         }
-
 
         move(){
           //Move
@@ -69,6 +67,7 @@
             this.yVelocity *= -gravity;
           }
 
+          // Bounce off cube back and front
           if(this.tetrahedron.position.z > 7.5-1.1 || this.tetrahedron.position.z < -7.5+1.1) {
             this.zVelocity *= -gravity;
           }
@@ -94,7 +93,7 @@
         const camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
         camera.position.z = 15;
         let cameraRotation = 0;
-        scene.background = new THREE.Color("grey");
+        scene.background = new THREE.Color("grey"); // background color
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -141,13 +140,13 @@
 
           cameraRotation += 0.002; // Adjust the speed of rotation
 
-            //Setup renderer
-            renderer.render(scene, camera);
+          //Setup renderer
+          renderer.render(scene, camera);
 
-            tetrahedron.move();
-            tetrahedron.colorChange();
+          tetrahedron.move();
+          tetrahedron.colorChange();
 
-            requestAnimationFrame(repeatMe);
+          requestAnimationFrame(repeatMe);
         }
         repeatMe();
 
