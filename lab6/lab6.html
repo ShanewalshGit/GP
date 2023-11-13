@@ -9,18 +9,7 @@
  <style type="text/css"></style>
  </head>
  <body>
-    <svg width="300" height="180">
-        <g transform="translate(5,15)">
-            <text x="0" y="0">Howdy!</text>
-        </g>
-
-        <g transform="translate(5,55)">
-        <!-- M: Move to (jump)
-            L: Line to 
-            Q: curve to (quadratic) -->
-            <path d="MO,50 L50, 0"
-        </g>
-    </svg>
+    
  <script type="text/javascript">
     // Retrieve the JSON data
     $.getJSON("https://pkgstore.datahub.io/core/co2-ppm/co2-mm-mlo_json/data/aed7eb0d19cbcd90790525d40728b0a8/co2-mm-mlo_json.json", function (data) {
@@ -36,6 +25,7 @@
         // parse the date / time
         var parseDate = d3.timeParse("%y-%m-%d");
 
+        // x and y scales for interpolated C02 and time
         var x = d3.scaleTime()
         .domain(d3.extent(data, function (d) { return parseDate(d["Date"]); }))
         .range([0,width]);
@@ -51,6 +41,34 @@
 
         var yAxis = d3.axisLeft(y)
         .ticks(3); // specify the number of ticks
+
+        // creates lines based on date and interpolated
+        var valueline = d3.line()
+        .x(function (d) { return x(parseDate(d["Date"])); })
+        .y(function (d) { return y(d["Interpolated"]); });
+
+        // adding an SVG element
+        var svg = d3.select('body')
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            
+            .append("g")
+                //adds offset for numbers
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // adding axes to svg
+        svg.append('g') // append a group element
+            .attr('class', 'x axis')
+            .call(xAxis);
+        
+        svg.append('g')
+            .attr('class', 'y axis')
+            .call(yAxis);
+
+        // draw path
+        svg.append("path")
+            .attr("d", valueline(data));
         
     }
 
