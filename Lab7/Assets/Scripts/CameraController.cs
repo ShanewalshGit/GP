@@ -20,10 +20,10 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         transform.position = player.transform.position + offset; 
-        /*
+        
         float h = horizontalSpeed * Input.GetAxis("Mouse X");
         float v = verticalSpeed * Input.GetAxis("Mouse Y");
         transform.Rotate(v, h, 0);
-        */
+        
     }
 }
