@@ -70,6 +70,10 @@
             .attr('class', 'x axis')
             .attr('transform', 'translate(0,' + height + ')')
             .call(xAxis);
+
+        svg.append('g')
+            .attr('class', 'y axis')
+            .call(yAxis);
             
         // X-axis label
         svg.append("text")
@@ -78,10 +82,6 @@
             .attr("y", height + margin.bottom+1 / 2)
             .style("text-anchor", "middle")
             .text("Date");
-        
-        svg.append('g')
-            .attr('class', 'y axis')
-            .call(yAxis)
 
         // Y-axis label
         svg.append("text") 
