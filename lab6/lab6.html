@@ -38,10 +38,10 @@
         //Axes
         //x is the d3.scaleTime()
         var xAxis = d3.axisBottom(x)
-        .ticks(3); // specify the number of ticks
+        .ticks(10); // specify the number of ticks
 
         var yAxis = d3.axisLeft(y)
-        .ticks(3); // specify the number of ticks
+        .ticks(10); // specify the number of ticks
 
         // creates lines based on date and interpolated dataS
         var valueline = d3.line()
@@ -69,22 +69,26 @@
         svg.append('g') // append a group element
             .attr('class', 'x axis')
             .attr('transform', 'translate(0,' + height + ')')
-            .call(xAxis)
-            .append("text") // X-axis label
+            .call(xAxis);
+            
+        // X-axis label
+        svg.append("text")
             .attr("class", "label")
             .attr("x", width / 2)
-            .attr("y", margin.bottom / 2)
+            .attr("y", height + margin.bottom+1 / 2)
             .style("text-anchor", "middle")
             .text("Date");
         
         svg.append('g')
             .attr('class', 'y axis')
             .call(yAxis)
-            .append("text") // Y-axis label
+
+        // Y-axis label
+        svg.append("text") 
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left)
-            .attr("x", height / 2)
+            .attr("x", -height / 2)
             .attr("dy", ".71em")
             .style("text-anchor", "middle")
             .text("CO2 Interpolated");
