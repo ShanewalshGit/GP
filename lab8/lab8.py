@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 print("Hello World")
 
-imgOrig = cv2.imread('keanu.jpg')
+imgOrig = cv2.imread('spidey.jpg')
 
 nrows = 2
 ncols = 5
@@ -18,9 +18,9 @@ sobelHorizontal = cv2.Sobel(imgGray,cv2.CV_64F,1,0,ksize=5) # x dir
 sobelVertical = cv2.Sobel(imgGray,cv2.CV_64F,0,1,ksize=5) # y dir
 sobelSum = cv2.addWeighted(sobelVertical, 0.5, sobelHorizontal, 0.5, 0)
 
-canny = cv2.Canny(imgGray,150,250)
+canny = cv2.Canny(imgGray,100,250)
 
-threshold = 1
+threshold = 300
 for i in range(0, sobelSum.shape[0]):
     for j in range(0, sobelSum.shape[1]):
         if sobelSum[i,j] > threshold/2:
