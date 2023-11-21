@@ -20,6 +20,14 @@ sobelSum = cv2.addWeighted(sobelVertical, 0.5, sobelHorizontal, 0.5, 0)
 
 canny = cv2.Canny(imgGray,150,250)
 
+threshold = 1
+for i in range(0, sobelSum.shape[0]):
+    for j in range(0, sobelSum.shape[1]):
+        if sobelSum[i,j] > threshold/2:
+            sobelSum[i,j] = threshold
+        else:
+            sobelSum[i,j] = 0
+
 plt.subplot(nrows, ncols,1),plt.imshow(imgOrig, cmap = 'gray')
 plt.title('Original'), plt.xticks([]), plt.yticks([])
 plt.subplot(nrows, ncols,2),plt.imshow(cv2.cvtColor(imgOrig,cv2.COLOR_BGR2RGB), cmap = 'gray')
