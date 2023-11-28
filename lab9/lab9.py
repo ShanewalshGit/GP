@@ -8,6 +8,8 @@ imgOrig = cv2.imread('ATU1.jpg')
 nrows = 2
 ncols = 5
 
+
+
 # convert to grayscale, gaussian blur, and blur
 imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY)
 
