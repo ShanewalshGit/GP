@@ -6,12 +6,12 @@ imgOrig = cv2.imread('ATU1.jpg')
 imgOrig2 = cv2.imread('ATU2.jpg')
 
 # Assign rows, cols
-nrows = 4
+nrows = 5
 ncols = 5
 
 
 
-# convert to grayscale, gaussian blur, and blur
+# convert to grayscale
 imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY)
 
 # Harris corner detection
@@ -105,33 +105,41 @@ matches2 = sorted(matches2, key=lambda x:x.distance)
 # Draw first 10 matches
 atuORBMatches = cv2.drawMatches(atu1, kp3, atu2, kp4, matches2[:10], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
-#FLANN Matcher
-FLANN_INDEX_LSH = 6
-index_params = dict(algorithm = FLANN_INDEX_LSH,
-                    table_number = 6,
-                    key_size = 12,
-                    multi_probe_level = 1)
-search_params = dict(checks = 50)
+# #FLANN Matcher
+# FLANN_INDEX_LSH = 6
+# index_params = dict(algorithm = FLANN_INDEX_LSH,
+#                     table_number = 6,
+#                     key_size = 12,
+#                     multi_probe_level = 1)
+# search_params = dict(checks = 50)
 
-flann = cv2.FlannBasedMatcher(index_params, search_params)
+# flann = cv2.FlannBasedMatcher(index_params, search_params)
 
-matches3 = flann.knnMatch(des3, des4, k=2)
+# matches3 = flann.knnMatch(des3, des4, k=1)
 
-# Need to draw only good matches, so create a mask
-matchesMask = [[0,0] for i in range(len(matches3))]
+# # Need to draw only good matches, so create a mask
+# matchesMask = [[0,0] for i in range(len(matches3))]
 
-# ratio test as per Lowe's paper
-for i,(m,n) in enumerate(matches3):
-    if m.distance < 0.7*n.distance:
-        matchesMask[i]=[1,0]
+# # ratio test as per Lowe's paper
+# for i,(m,n) in enumerate(matches3):
+#     if m.distance < 0.7*n.distance:
+#         matchesMask[i]=[1,0]
 
-draw_params = dict(matchColor = (255, 0, 255),
-                     singlePointColor = (255, 0, 255),
-                        matchesMask = matchesMask,
-                        flags = cv2.DrawMatchesFlags_DEFAULT)
+# draw_params = dict(matchColor = (255, 0, 255),
+#                      singlePointColor = (255, 0, 255),
+#                         matchesMask = matchesMask,
+#                         flags = cv2.DrawMatchesFlags_DEFAULT)
 
-atuFLANNMatches = cv2.drawMatchesKnn(atu1, kp3, atu2, kp4, matches3, None, **draw_params)
+# atuFLANNMatches = cv2.drawMatchesKnn(atu1, kp3, atu2, kp4, matches3, None, **draw_params)
 
+
+#Split image into RGB channels
+colourImg = cv2.imread('Baldurs.jpg')
+b,g,r = cv2.split(colourImg)
+
+#Split image into HSV channels
+hsvImg = cv2.cvtColor(colourImg, cv2.COLOR_BGR2HSV)
+h,s,v = cv2.split(hsvImg)
 
 # Contours detection
 contours, hierarchy = cv2.findContours(imgGray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -161,13 +169,24 @@ plt.subplot(nrows, ncols,10),plt.imshow(atuImgORB2, cmap = 'gray')
 plt.title('ATU 2'), plt.xticks([]), plt.yticks([])
 plt.subplot(nrows, ncols,11),plt.imshow(atuORBMatches, cmap = 'gray')
 plt.title('ATU BF Matches'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,12),plt.imshow(atuFLANNMatches, cmap = 'gray')
-plt.title('ATU FLANN Matches'), plt.xticks([]), plt.yticks([])
+#plt.subplot(nrows, ncols,12),plt.imshow(atuFLANNMatches, cmap = 'gray')
+#plt.title('ATU FLANN Matches'), plt.xticks([]), plt.yticks([])
 plt.subplot(nrows, ncols,13),plt.imshow(imgContours, cmap = 'gray')
 plt.title('Contours'), plt.xticks([]), plt.yticks([])
-
+plt.subplot(nrows, ncols,14),plt.imshow(b, cmap = 'gray')
+plt.title('Blue'), plt.xticks([]), plt.yticks([])
+plt.subplot(nrows, ncols,15),plt.imshow(g, cmap = 'gray')
+plt.title('Green'), plt.xticks([]), plt.yticks([])
+plt.subplot(nrows, ncols,16),plt.imshow(r, cmap = 'gray')
+plt.title('Red'), plt.xticks([]), plt.yticks([])
+plt.subplot(nrows, ncols,17),plt.imshow(h, cmap = 'gray')
+plt.title('Hue'), plt.xticks([]), plt.yticks([])
+plt.subplot(nrows, ncols,18),plt.imshow(s, cmap = 'gray')
+plt.title('Saturation'), plt.xticks([]), plt.yticks([])
+plt.subplot(nrows, ncols,19),plt.imshow(v, cmap = 'gray')
+plt.title('Value'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 
 cv2.waitKey(0)
-cv2.destroyAllwindows()
+cv2.destroyAllWindows()
