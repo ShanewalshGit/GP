@@ -34,6 +34,7 @@ while cap.isOpened():
         # Visualize the results on the frame
         annotated_frame = results[0].plot()
 
+
         # Plot the tracks
         for box, track_id in zip(boxes, track_ids):
             x, y, w, h = box
