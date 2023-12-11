@@ -8,13 +8,13 @@ import numpy as np
 
 from ultralytics import YOLO
 
-import pytesseract
+#import pytesseract
 
 # Load the YOLOv8 model
 model = YOLO('yolov8n.pt')
 
 # Open the video file
-video_path = "traffic.mp4"
+video_path = "traffic3.mp4"
 cap = cv2.VideoCapture(video_path)
 
 # Store the track history
@@ -40,8 +40,16 @@ while cap.isOpened():
         # Visualize the results on the frame
         annotated_frame = results[0].plot()
 
-        for box in boxes:
-            
+        # Extract the bounding boxes for each of the bus tracked detections
+        # for box in boxes:
+        #     x, y, w, h = box
+        #     x, y, w, h = int(x), int(y), int(w), int(h)  # convert to integers
+        #     # Crop the image to the bounding box
+        #     cropped_image = frame[y:y+h, x:x+w]
+        #     # Use pytesseract to read the text on the bus
+        #     bus_number = pytesseract.image_to_string(cropped_image)
+        #     # Add the bus number to the annotation
+        #     cv2.putText(annotated_frame, bus_number, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
 
 
         # Plot the tracks
