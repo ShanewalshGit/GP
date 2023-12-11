@@ -8,6 +8,8 @@ import numpy as np
 
 from ultralytics import YOLO
 
+import pytesseract
+
 # Load the YOLOv8 model
 model = YOLO('yolov8n.pt')
 
@@ -28,11 +30,18 @@ while cap.isOpened():
         results = model.track(frame, persist=True)
 
         # Get the boxes and track IDs
-        boxes = results[0].boxes.xywh.cpu()
-        track_ids = results[0].boxes.id.int().cpu().tolist()
+        if results is not None and results[0] is not None and results[0].boxes is not None and results[0].boxes.id is not None:
+            boxes = results[0].boxes.xywh.cpu()
+            track_ids = results[0].boxes.id.int().cpu().tolist()
+        else:
+            print("No results found")
+            continue
 
         # Visualize the results on the frame
         annotated_frame = results[0].plot()
+
+        for box in boxes:
+            
 
 
         # Plot the tracks
