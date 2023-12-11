@@ -23,6 +23,12 @@
         width = 980 - margin.left - margin.right,
         height = 670 - margin.top - margin.bottom;
 
+        // Check if data is not empty and has the expected structure
+        if (!data || !Array.isArray(data) || data.length === 0 || !("Date" in data[0]) || !("Interpolated" in data[0])) {
+            console.error("Invalid or empty data");
+            return;
+        }
+
         // parse the date / time
         var parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -43,7 +49,7 @@
         var yAxis = d3.axisLeft(y)
         .ticks(10); // specify the number of ticks
 
-        // creates lines based on date and interpolated dataS
+        // creates lines based on date and interpolated
         var valueline = d3.line()
         .x(function (d) { return x(parseDate(d["Date"])); })
         .y(function (d) { return y(d["Interpolated"]); })
@@ -66,8 +72,8 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         // adding axes to svg
-        svg.append('g') // append a group element
-            .attr('class', 'x axis')
+        svg.append('g')
+            .attr('class', 'x axis') // assign class 'x axis' to the x-axis group
             .attr('transform', 'translate(0,' + height + ')')
             .call(xAxis);
 
@@ -95,12 +101,14 @@
 
         // draw path for interpolated
         svg.append("path")
+            .attr("class", "valueline") // Add class 'valueline' for the interpolated line
             .attr("d", valueline(data))
             .attr("fill", "none")
             .attr("stroke", "red");
 
         // draw path for trend
         svg.append("path")
+            .attr("class", "trendline") // Add class 'trendline' for the trend line
             .attr("d", trendline(data))
             .attr("fill", "none")
             .attr("stroke", "blue");
@@ -113,10 +121,9 @@
             .style("font-size", "24px")
             .text("CO2 Levels Over Time");
 
-        // Add zoom functionality
-        
+        // zoom functionality
         var zoom = d3.zoom()
-            .scaleExtent([1, Infinity])
+            .scaleExtent([1, 10])
             .translateExtent([[0,0], [width, height]])
             .extent([[0,0], [width, height]])
             .on("zoom", zoomed);
@@ -128,14 +135,43 @@
             .style("pointer-events", "all")
             .call(zoom);
 
-        function zoomed() {
-            x.range([d3.event.transform.applyX(0), d3.event.transform.applyX(width)]);
-            svg.select(".x.axis").call(xAxis);
-            svg.selectAll("path").attr("d", function (d) {
-                return valueline(data);
-            })
-        }
+        // Brush functionality
+        var brush = d3.brushX()
+            .extent([[0, 0], [width, height]])
+            .on("end", brushed);
+
+        svg.append("g")
+            .attr("class", "brush")
+            .call(brush);
         
+
+            function zoomed() {
+            // Update axes
+            svg.select(".x.axis").call(xAxis.scale(d3.event.transform.rescaleX(x)));
+            // Redraw lines
+            svg.select(".valueline")
+                .attr("d", valueline.x(function (d) { return d3.event.transform.rescaleX(x)(parseDate(d["Date"])); }));
+            svg.select(".trendline")
+                .attr("d", trendline.x(function (d) { return d3.event.transform.rescaleX(x)(parseDate(d["Date"])); }));
+        }
+
+        // Brush functionality with selector
+        function brushed() {
+            try {
+                var selection = d3.event.selection;
+                if (!selection) return; 
+                var selectedDomain = selection.map(x.invert, x);
+                x.domain(selectedDomain);
+                svg.select(".x.axis").call(xAxis.scale(x));
+                svg.select(".valueline")
+                    .attr('d', valueline);
+                svg.select(".trendline")
+                    .attr("d", trendline);
+            } catch (error) {
+                console.log("Error in brushed function" + error);
+            }
+        }
+
     }
  </script>
  </body>
