@@ -13,7 +13,14 @@ public class SceneChanger : MonoBehaviour
     void Start()
     {
         // Set the initial active scene to sceneA
-        currentScene = sceneA;
+        if (SceneManager.GetActiveScene().name == sceneA)
+        {
+            currentScene = sceneA;
+        }
+        else
+        {
+            currentScene = sceneB;
+        }
     }
 
     void Update()
@@ -26,23 +33,18 @@ public class SceneChanger : MonoBehaviour
         }
     }
 
-    void ToggleScene()
+    private void ToggleScene()
     {
-        // Determine the next scene to load based on the current active scene
-        string nextScene;
-        
-        if(currentScene == sceneA)
-            nextScene = sceneB;
-
-        else if(currentScene == sceneB)
-            nextScene = sceneA;
-        else
-            nextScene = sceneA; 
-
-        // Load the next scene
-        SceneManager.LoadScene(nextScene);
-
-        // Update the current active scene
-        currentScene = nextScene;
+        // Check the current active scene and load the other one
+    if (SceneManager.GetActiveScene().name == sceneA)
+    {
+        SceneManager.LoadScene(sceneB);
+        currentScene = sceneB;
+    }
+    else
+    {
+        SceneManager.LoadScene(sceneA);
+        currentScene = sceneA;
+    }
     }
 }

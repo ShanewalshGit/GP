@@ -12,7 +12,7 @@ from ultralytics import YOLO
 model = YOLO('yolov8n.pt')
 
 # Open the video file
-video_path = "traffic3.mp4"
+video_path = "traffic.mp4"
 cap = cv2.VideoCapture(video_path)
 
 # Store the track history
@@ -46,6 +46,11 @@ while cap.isOpened():
             # Draw the tracking lines
             points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
             cv2.polylines(annotated_frame, [points], isClosed=False, color=(230, 230, 230), thickness=10)
+
+
+        # Plot the detections
+        for r in results:
+            im_array = r.plot()  # plot a BGR numpy array of predictions
 
 
         # Display the annotated frame

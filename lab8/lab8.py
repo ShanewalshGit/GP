@@ -15,16 +15,16 @@ imgOut = cv2.GaussianBlur(imgGray,(5, 5),0)
 blur = cv2.blur(imgGray,(13, 13),0)
 
 # convert to sobels, horizontal and vertical
-sobelHorizontal = cv2.Sobel(imgGray,cv2.CV_64F,1,0,ksize=5) # x dir
-sobelVertical = cv2.Sobel(imgGray,cv2.CV_64F,0,1,ksize=5) # y dir
+sobelHorizontal = cv2.Sobel(blur,cv2.CV_64F,1,0,ksize=5) # x dir
+sobelVertical = cv2.Sobel(blur,cv2.CV_64F,0,1,ksize=5) # y dir
 # sum together sobels
 sobelSum = cv2.addWeighted(sobelVertical, 0.5, sobelHorizontal, 0.5, 0)
 
 # convert to canny
-canny = cv2.Canny(imgGray,100,250)
+canny = cv2.Canny(imgOut,50,150)
 
 # thresholding sobelSum, all values below threshold are set to 0, otherwise set to selected threshold
-threshold = 1
+threshold = 50
 for i in range(0, sobelSum.shape[0]):
     for j in range(0, sobelSum.shape[1]):
         if sobelSum[i,j] > threshold/2:

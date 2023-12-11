@@ -6,9 +6,8 @@ imgOrig = cv2.imread('ATU1.jpg')
 imgOrig2 = cv2.imread('ATU2.jpg')
 
 # Assign rows, cols
-nrows = 5
-ncols = 5
-
+nrows = 3
+ncols = 6
 
 
 # convert to grayscale
@@ -105,7 +104,7 @@ matches2 = sorted(matches2, key=lambda x:x.distance)
 # Draw first 10 matches
 atuORBMatches = cv2.drawMatches(atu1, kp3, atu2, kp4, matches2[:10], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
-# #FLANN Matcher
+#FLANN Matcher
 # FLANN_INDEX_LSH = 6
 # index_params = dict(algorithm = FLANN_INDEX_LSH,
 #                     table_number = 6,
@@ -126,7 +125,7 @@ atuORBMatches = cv2.drawMatches(atu1, kp3, atu2, kp4, matches2[:10], None, flags
 #         matchesMask[i]=[1,0]
 
 # draw_params = dict(matchColor = (255, 0, 255),
-#                      singlePointColor = (255, 0, 255),
+#                     singlePointColor = (255, 0, 255),
 #                         matchesMask = matchesMask,
 #                         flags = cv2.DrawMatchesFlags_DEFAULT)
 
@@ -171,19 +170,19 @@ plt.subplot(nrows, ncols,11),plt.imshow(atuORBMatches, cmap = 'gray')
 plt.title('ATU BF Matches'), plt.xticks([]), plt.yticks([])
 #plt.subplot(nrows, ncols,12),plt.imshow(atuFLANNMatches, cmap = 'gray')
 #plt.title('ATU FLANN Matches'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,13),plt.imshow(imgContours, cmap = 'gray')
+plt.subplot(nrows, ncols,12),plt.imshow(imgContours, cmap = 'gray')
 plt.title('Contours'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,14),plt.imshow(b, cmap = 'gray')
+plt.subplot(nrows, ncols,13),plt.imshow(b, cmap = 'gray')
 plt.title('Blue'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,15),plt.imshow(g, cmap = 'gray')
+plt.subplot(nrows, ncols,14),plt.imshow(g, cmap = 'gray')
 plt.title('Green'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,16),plt.imshow(r, cmap = 'gray')
+plt.subplot(nrows, ncols,15),plt.imshow(r, cmap = 'gray')
 plt.title('Red'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,17),plt.imshow(h, cmap = 'gray')
+plt.subplot(nrows, ncols,16),plt.imshow(h, cmap = 'gray')
 plt.title('Hue'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,18),plt.imshow(s, cmap = 'gray')
+plt.subplot(nrows, ncols,17),plt.imshow(s, cmap = 'gray')
 plt.title('Saturation'), plt.xticks([]), plt.yticks([])
-plt.subplot(nrows, ncols,19),plt.imshow(v, cmap = 'gray')
+plt.subplot(nrows, ncols,18),plt.imshow(v, cmap = 'gray')
 plt.title('Value'), plt.xticks([]), plt.yticks([])
 
 plt.show()
