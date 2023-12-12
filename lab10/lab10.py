@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections import Counter
 
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -13,8 +14,12 @@ from ultralytics import YOLO
 # Load the YOLOv8 model
 model = YOLO('yolov8n.pt')
 
+# Define the codec using VideoWriter_fourcc and create a VideoWriter object
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # or use 'XVID'
+out = cv2.VideoWriter('traffic3.mp4', fourcc, 30.0, (640, 480))  # adjust the frame size (640, 480) to match your frame size
+
 # Open the video file
-video_path = "traffic3.mp4"
+video_path = "streetFootage.mp4"
 cap = cv2.VideoCapture(video_path)
 
 # Store the track history
@@ -33,12 +38,23 @@ while cap.isOpened():
         if results is not None and results[0] is not None and results[0].boxes is not None and results[0].boxes.id is not None:
             boxes = results[0].boxes.xywh.cpu()
             track_ids = results[0].boxes.id.int().cpu().tolist()
+
+            # Get the class IDs
+            class_ids = results[0].classes.cpu().tolist()
+
+            # Count the occurences of each class ID
+            class_id_counts = Counter(class_ids)
+
+            print(f"Class ID counts: {class_id_counts}")
         else:
             print("No results found")
             continue
 
         # Visualize the results on the frame
         annotated_frame = results[0].plot()
+
+        # Save output video
+        out.write(annotated_frame)
 
         # Extract the bounding boxes for each of the bus tracked detections
         # for box in boxes:
@@ -82,4 +98,5 @@ while cap.isOpened():
 
 # Release the video capture object and close the display window
 cap.release()
+out.release()
 cv2.destroyAllWindows()
