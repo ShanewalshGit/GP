@@ -88,7 +88,7 @@ while cap.isOpened():
 
         # Display the annotated frame
         cv2.imshow("YOLOv8 Tracking", annotated_frame)
-        
+
 
         # Break the loop if 'q' is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
